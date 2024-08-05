@@ -69,485 +69,292 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="杜教筛">杜教筛</h1>
-<p>首先这玩意的前置知识是 Dirichlet 卷积<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>记这个复合为
-<span class="math inline">\(*\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>正常的点值乘法为
-<span class="math inline">\(\times\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>其实推导式子是不用莫反的<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>假设我们有一个积性函数 <span class="math inline">\(f\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>定义它的前缀和函数为
-<span class="math inline">\(S(f, n) = \sum_{i=1}^n f(i)\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>现在需要解决的是快速算出
-<span class="math inline">\(S(f, n)\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>由
-duls 总结的杜教筛对一部分具有特殊性质的 <span
-class="math inline">\(f\)</span> 提供了一种 <span
-class="math inline">\(O(n^{2/3})\)</span> 时间复杂度的解决方案<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>具体地<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们构造
-<span class="math inline">\(g,h\text{ s.t. } h = f * g\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>假设我们容易对给定的多个
-<span class="math inline">\(k \le n \text{ s.t. } \exists x, k =
-\left\lfloor \frac nx \right\rfloor\)</span> 求得 <span
-class="math inline">\(S(g, k)\)</span> 和 <span
-class="math inline">\(S(h, k)\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们就可以应用杜教筛<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>杜教筛的推导如下<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
-$$
-<span class="math display">\[\begin{aligned}
-
-S(h, n) &amp; = \sum_{x=1}^n h(x)
-\\ &amp; = \sum_{x = 1}^n \sum_{d|x} g(d) f(\frac xd)
-\\ &amp; = \sum_{d = 1}^n g(d) \sum_{x = 1}^{\left\lfloor \frac n d
-\right\rfloor} f(x)
-\\ &amp; = \sum_{d = 1}^n g(d) S(f, \left\lfloor \frac n d
-\right\rfloor)
-\\ &amp; = g(1) S(f, n) + \sum_{d = 2}^n g(d) S(f, \left\lfloor \frac n
-d \right\rfloor)
-\\ g(1) S(f, n) &amp; = S(h, n) - \sum_{d = 2}^n g(d) S(f, \left\lfloor
-\frac n d \right\rfloor)
-\\ S(f, n) &amp; = \frac{1}{g(1)} \left( S(h, n) - \sum_{d = 2}^n g(d)
-S(f, \left\lfloor \frac n d \right\rfloor) \right)
-
-\end{aligned}\]</span>
-<p>$$</p>
-<p>所以就可以按照上面的方式递归了<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>一般
-<span class="math inline">\(g(1)\)</span> 是 <span
-class="math inline">\(1\)</span> 所以可以忽略<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
-<p>那复杂度是多少呢<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>应用<a
-target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/paperessay221204.html#-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">分析
-<span class="math inline">\(Min25\)</span>
-筛时用到的渐进方式</a>可以得到</p>
-$$
-<span class="math display">\[\begin{aligned}
-
-&amp; \sum_{i=1}^{\sqrt n} O(\sqrt i) + \sum_{i=1}^{\sqrt n} O(\sqrt
-\frac ni)
-\\ = \ &amp; O\left(\int_{1}^{\sqrt n} x^{\frac 12} \text dx\right) +
-O\left(\int_{1}^{\sqrt n} (\frac n x)^{\frac 12} \text dx\right)
-\\ = \ &amp; O\left(n^{3/4} \right) + O\left(n^{3/4} \right)
-
-\end{aligned}\]</span>
-<p>$$</p>
-<p>因此不预处理的复杂度是 <span class="math inline">\(O\left(n^{3/4}
-\right)\)</span> 的<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里默认记忆化了<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-欸你刚才不是说 <span class="math inline">\(2/3\)</span> 吗<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>咋变慢了<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>
-别着急<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>现在考虑预处理<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们预处理前
-<span class="math inline">\(B\)</span> 个位置的值<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>且有
-<span class="math inline">\(B \ge \sqrt n\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>复杂度就变成了
-$$
-<span class="math display">\[\begin{aligned}
-
-\sum_{i=B}^{\sqrt n} O(\sqrt \frac ni) = O\left(\frac{n}{\sqrt B}\right)
-
-\end{aligned}\]</span>
-<p>$$ 取 <span class="math inline">\(B = n^{2/3}\)</span>
-得到总时间复杂度 <span class="math inline">\(O(n^{2/3})\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>总结一下<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>杜教筛是一类特殊的递归方案<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们首先选取两个易求前缀和的函数<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>随后将所求函数
-<span class="math inline">\(f\)</span> 的前 <span
-class="math inline">\(n^{2/3}\)</span> 个点值求出来<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>做前缀和<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>最后记忆化递归<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在过程中模拟如上的式子就能得到最终答案了<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br />
-还发现<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由于杜教筛的记忆化性质<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其可以在一次求解中得到
-<span class="math inline">\(n\)</span> 对应 <span
-class="math inline">\(O(\sqrt n)\)</span> 个数论分块点值处的前缀和<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>因此其时间复杂度应当均摊分析<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于数论分块中时总复杂度没有退化<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
-重复式子<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>构造
-<span class="math inline">\(g,h\text{ s.t. } h = f * g\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>
-<span class="math display">\[S(f, n) = \frac{1}{g(1)} \left( S(h, n) -
-\sum_{d = 2}^n g(d) S(f, \left\lfloor \frac n d \right\rfloor)
-\right)\]</span></p>
-<p>给出几个常见的数论函数<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>
-- 欧拉函数 <span class="math inline">\(\varphi(n) = \sum_{(d,n) =1}
-1\)</span> - 莫比乌斯函数 <span class="math inline">\(\mu(n)\)</span> -
-恒等函数 <span class="math inline">\(\text I(n) = 1\)</span> - 元函数
-<span class="math inline">\(e(n) = [n = 1]\)</span> - 单位函数 <span
-class="math inline">\(\text{id} (n) = n\)</span> - 约数个数函数 <span
-class="math inline">\(\text{d} (n) = \sum_{d | n} 1\)</span> -
-题面里给的函数 <span class="math inline">\(f(n) =
-\small{我怎么知道}\)</span></p>
-<p>这里记 <span class="math inline">\(k\)</span> 个数论函数 <span
-class="math inline">\(f\)</span> 卷起来的函数为 <span
-class="math inline">\(f_k\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>给出几个常见的构造<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>
-- <span class="math inline">\(\mu * \text I = e \ \to \ f = (f * \text
-I) * \mu \ \)</span> 该变换即莫比乌斯反演<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
-- <span class="math inline">\(\varphi * \text I = \text {id}\ \to \
-\text{id} * \mu = \varphi\)</span> - <span
-class="math inline">\(\text{id} * \text{id} = \text{id} \times \text
-d\)</span></p>
-<p>结合例题来理解吧<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>首先这玩意的前置知识是 Dirichlet 卷积<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>记这个复合为 <span class="markdown-them-math-inline">$*$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>正常的点值乘法为 <span class="markdown-them-math-inline">$\times$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>其实推导式子是不用莫反的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>假设我们有一个积性函数 <span class="markdown-them-math-inline">$f$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>定义它的前缀和函数为 <span class="markdown-them-math-inline">$S(f, n) = \sum_{i=1}^n f(i)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>现在需要解决的是快速算出 <span class="markdown-them-math-inline">$S(f, n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>由 duls 总结的杜教筛对一部分具有特殊性质的 <span class="markdown-them-math-inline">$f$</span> 提供了一种 <span class="markdown-them-math-inline">$O(n^{2/3})$</span> 时间复杂度的解决方案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>具体地<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们构造 <span class="markdown-them-math-inline">$g,h\text{ s.t. } h = f * g$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>假设我们容易对给定的多个 <span class="markdown-them-math-inline">$k \le n \text{ s.t. } \exists x, k = \left\lfloor \frac nx \right\rfloor$</span> 求得 <span class="markdown-them-math-inline">$S(g, k)$</span> 和 <span class="markdown-them-math-inline">$S(h, k)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们就可以应用杜教筛<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>杜教筛的推导如下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p>$$\begin{aligned}</p>
+<p>S(h, n) &amp; = \sum_{x=1}^n h(x)<br>
+\ &amp; = \sum_{x = 1}^n \sum_{d|x} g(d) f(\frac xd)<br>
+\ &amp; = \sum_{d = 1}^n g(d) \sum_{x = 1}^{\left\lfloor \frac n d \right\rfloor} f(x)<br>
+\ &amp; = \sum_{d = 1}^n g(d) S(f, \left\lfloor \frac n d \right\rfloor)<br>
+\ &amp; = g(1) S(f, n) + \sum_{d = 2}^n g(d) S(f, \left\lfloor \frac n d \right\rfloor)<br>
+\ g(1) S(f, n) &amp; = S(h, n) - \sum_{d = 2}^n g(d) S(f, \left\lfloor \frac n d \right\rfloor)<br>
+\ S(f, n) &amp; = \frac{1}{g(1)} \left( S(h, n) - \sum_{d = 2}^n g(d) S(f, \left\lfloor \frac n d \right\rfloor) \right)</p>
+<p>\end{aligned}$$</p>
+<p>所以就可以按照上面的方式递归了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>一般 <span class="markdown-them-math-inline">$g(1)$</span> 是 <span class="markdown-them-math-inline">$1$</span> 所以可以忽略<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>那复杂度是多少呢<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>应用<a target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/paperessay221204.html#-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">分析 <span class="markdown-them-math-inline">$Min25$</span> 筛时用到的渐进方式</a>可以得到</p>
+<p>$$\begin{aligned}</p>
+<p>&amp; \sum_{i=1}^{\sqrt n} O(\sqrt i) + \sum_{i=1}^{\sqrt n} O(\sqrt \frac ni)<br>
+\ = \ &amp; O\left(\int_{1}^{\sqrt n} x^{\frac 12} \text dx\right) + O\left(\int_{1}^{\sqrt n} (\frac n x)^{\frac 12} \text dx\right)<br>
+\ = \ &amp; O\left(n^{3/4} \right) + O\left(n^{3/4} \right)</p>
+<p>\end{aligned}$$</p>
+<p>因此不预处理的复杂度是 <span class="markdown-them-math-inline">$O\left(n^{3/4} \right)$</span> 的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里默认记忆化了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>欸你刚才不是说 <span class="markdown-them-math-inline">$2/3$</span> 吗<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>咋变慢了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span><br>
+别着急<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>现在考虑预处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们预处理前 <span class="markdown-them-math-inline">$B$</span> 个位置的值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>且有 <span class="markdown-them-math-inline">$B \ge \sqrt n$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>复杂度就变成了<br>
+$$\begin{aligned}</p>
+<p>\sum_{i=B}^{\sqrt n} O(\sqrt \frac ni) = O\left(\frac{n}{\sqrt B}\right)</p>
+<p>\end{aligned}$<span class="markdown-them-math-inline">$
+取 $</span>B = n^{2/3}<span class="markdown-them-math-inline">$ 得到总时间复杂度 $</span>O(n^{2/3})$<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>总结一下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>杜教筛是一类特殊的递归方案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们首先选取两个易求前缀和的函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>随后将所求函数 <span class="markdown-them-math-inline">$f$</span> 的前 <span class="markdown-them-math-inline">$n^{2/3}$</span> 个点值求出来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>做前缀和<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>最后记忆化递归<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在过程中模拟如上的式子就能得到最终答案了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br>
+还发现<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由于杜教筛的记忆化性质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其可以在一次求解中得到 <span class="markdown-them-math-inline">$n$</span> 对应 <span class="markdown-them-math-inline">$O(\sqrt n)$</span> 个数论分块点值处的前缀和<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>因此其时间复杂度应当均摊分析<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于数论分块中时总复杂度没有退化<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br>
+重复式子<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>构造 <span class="markdown-them-math-inline">$g,h\text{ s.t. } h = f * g$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><br>
+<div class="markdown-them-math-block">$$S(f, n) = \frac{1}{g(1)} \left( S(h, n) - \sum_{d = 2}^n g(d) S(f, \left\lfloor \frac n d \right\rfloor) \right)$$</div></p>
+<p>给出几个常见的数论函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li>欧拉函数 <span class="markdown-them-math-inline">$\varphi(n) = \sum_{(d,n) =1} 1$</span></li>
+<li>莫比乌斯函数 <span class="markdown-them-math-inline">$\mu(n)$</span></li>
+<li>恒等函数 <span class="markdown-them-math-inline">$\text I(n) = 1$</span></li>
+<li>元函数 <span class="markdown-them-math-inline">$e(n) = [n = 1]$</span></li>
+<li>单位函数 <span class="markdown-them-math-inline">$\text{id} (n) = n$</span></li>
+<li>约数个数函数 <span class="markdown-them-math-inline">$\text{d} (n) = \sum_{d | n} 1$</span></li>
+<li>题面里给的函数 <span class="markdown-them-math-inline">$f(n) = \small{我怎么知道}$</span></li>
+</ul>
+<p>这里记 <span class="markdown-them-math-inline">$k$</span> 个数论函数 <span class="markdown-them-math-inline">$f$</span> 卷起来的函数为 <span class="markdown-them-math-inline">$f_k$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>给出几个常见的构造<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li><span class="markdown-them-math-inline">$\mu * \text I = e \ \to \ f = (f * \text I) * \mu \ $</span> 该变换即莫比乌斯反演<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li><span class="markdown-them-math-inline">$\varphi * \text I = \text {id}\ \to \ \text{id} * \mu = \varphi$</span></li>
+<li><span class="markdown-them-math-inline">$\text{id} * \text{id} = \text{id} \times \text d$</span></li>
+</ul>
+<p>结合例题来理解吧<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <h2 id="例题">例题</h2>
-<p>首先是板子<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>首先是板子<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4213"><span
-class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>模板<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span>杜教筛</a></p>
-<p>给定正整数 <span class="math inline">\(n\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求
-<span class="math inline">\(S(\varphi, n)\)</span> 与 <span
-class="math inline">\(S(\mu, n)\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><span class="math inline">\(n \le 10^{11}\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4213"><span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>模板<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span>杜教筛</a></p>
+<p>给定正整数 <span class="markdown-them-math-inline">$n$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求 <span class="markdown-them-math-inline">$S(\varphi, n)$</span> 与 <span class="markdown-them-math-inline">$S(\mu, n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><span class="markdown-them-math-inline">$n \le 10^{11}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 </blockquote>
-<p>照上式模拟即可<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体看代码<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>照上式模拟即可<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体看代码<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <details>
-<summary>
-code
-</summary>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bits/stdc++.h&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define int </span><span class="dt">long</span><span class="pp"> </span><span class="dt">long</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#define rep</span><span class="op">(</span>i<span class="op">,</span>a<span class="op">,</span>b<span class="op">)</span><span class="pp"> </span><span class="cf">for</span><span class="pp"> </span><span class="op">(</span><span class="pp"> </span><span class="at">register</span><span class="pp"> </span><span class="dt">int</span><span class="pp"> </span><span class="op">(</span>i<span class="op">)</span><span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="op">(</span>a<span class="op">);</span><span class="pp"> </span><span class="op">(</span>i<span class="op">)</span><span class="pp"> </span><span class="op">&lt;=</span><span class="pp"> </span><span class="op">(</span>b<span class="op">);</span><span class="pp"> </span><span class="op">++(</span>i<span class="op">)</span><span class="pp"> </span><span class="op">)</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#define pre</span><span class="op">(</span>i<span class="op">,</span>a<span class="op">,</span>b<span class="op">)</span><span class="pp"> </span><span class="cf">for</span><span class="pp"> </span><span class="op">(</span><span class="pp"> </span><span class="at">register</span><span class="pp"> </span><span class="dt">int</span><span class="pp"> </span><span class="op">(</span>i<span class="op">)</span><span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="op">(</span>a<span class="op">);</span><span class="pp"> </span><span class="op">(</span>i<span class="op">)</span><span class="pp"> </span><span class="op">&gt;=</span><span class="pp"> </span><span class="op">(</span>b<span class="op">);</span><span class="pp"> </span><span class="op">--(</span>i<span class="op">)</span><span class="pp"> </span><span class="op">)</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="fl">5e6</span> <span class="op">+</span> <span class="dv">10</span><span class="op">,</span> L <span class="op">=</span> <span class="fl">5e6</span><span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> T<span class="op">,</span> n<span class="op">;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> prime<span class="op">[</span>N<span class="op">],</span> cnt<span class="op">,</span> phi<span class="op">[</span>N<span class="op">],</span> mu<span class="op">[</span>N<span class="op">];</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">inline</span> <span class="dt">void</span> sieve<span class="op">()</span> <span class="op">&#123;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    phi<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> mu<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">2</span><span class="op">,</span>L<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>phi<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> prime<span class="op">[++</span>cnt<span class="op">]</span> <span class="op">=</span> i<span class="op">,</span> phi<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> i <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> mu<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        rep<span class="op">(</span>j<span class="op">,</span><span class="dv">1</span><span class="op">,</span>cnt<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="dt">int</span> tmp <span class="op">=</span> i <span class="op">*</span> prime<span class="op">[</span>j<span class="op">];</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>tmp <span class="op">&gt;</span> L<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>i <span class="op">%</span> prime<span class="op">[</span>j<span class="op">]</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                phi<span class="op">[</span>tmp<span class="op">]</span> <span class="op">=</span> prime<span class="op">[</span>j<span class="op">]</span> <span class="op">*</span> phi<span class="op">[</span>i<span class="op">];</span> mu<span class="op">[</span>tmp<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="op">&#125;</span> <span class="cf">else</span> </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                phi<span class="op">[</span>tmp<span class="op">]</span> <span class="op">=</span> phi<span class="op">[</span>prime<span class="op">[</span>j<span class="op">]]</span> <span class="op">*</span> phi<span class="op">[</span>i<span class="op">];</span> mu<span class="op">[</span>tmp<span class="op">]</span> <span class="op">=</span> <span class="op">-</span>mu<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">&#125;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">&#125;</span> </span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">2</span><span class="op">,</span>L<span class="op">)</span> phi<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> phi<span class="op">[</span>i<span class="op">-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> phi<span class="op">[</span>i<span class="op">],</span> mu<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> mu<span class="op">[</span>i<span class="op">-</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> mu<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="op">&#125;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> _phi<span class="op">[</span>N<span class="op">],</span> _mu<span class="op">[</span>N<span class="op">];</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="kw">inline</span> <span class="dt">int</span> getPhi<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x <span class="op">&lt;=</span> L<span class="op">)</span> <span class="cf">return</span> phi<span class="op">[</span>x<span class="op">];</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(~</span>_phi<span class="op">[</span>n <span class="op">/</span> x<span class="op">])</span> <span class="cf">return</span> _phi<span class="op">[</span>n <span class="op">/</span> x<span class="op">];</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> ret <span class="op">=</span> <span class="dv">1</span><span class="bu">ll</span> <span class="op">*</span> x <span class="op">*</span> <span class="op">(</span>x <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&gt;&gt;</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> l <span class="op">=</span> <span class="dv">2</span><span class="op">,</span> r<span class="op">;</span> l <span class="op">&lt;=</span> x<span class="op">;</span> l <span class="op">=</span> r<span class="op">+</span><span class="dv">1</span><span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> x <span class="op">/</span> <span class="op">(</span> x <span class="op">/</span> l <span class="op">);</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        ret <span class="op">-=</span> <span class="op">(</span>r <span class="op">-</span> l <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> getPhi<span class="op">(</span>x <span class="op">/</span> l<span class="op">);</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">&#125;</span> </span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _phi<span class="op">[</span>n <span class="op">/</span> x<span class="op">]</span> <span class="op">=</span> ret<span class="op">;</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="op">&#125;</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="kw">inline</span> <span class="dt">int</span> getMu<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>x <span class="op">&lt;=</span> L<span class="op">)</span> <span class="cf">return</span> mu<span class="op">[</span>x<span class="op">];</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(~</span>_mu<span class="op">[</span>n <span class="op">/</span> x<span class="op">])</span> <span class="cf">return</span> _mu<span class="op">[</span>n <span class="op">/</span> x<span class="op">];</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> ret <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> l <span class="op">=</span> <span class="dv">2</span><span class="op">,</span> r<span class="op">;</span> l <span class="op">&lt;=</span> x<span class="op">;</span> l <span class="op">=</span> r <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> x <span class="op">/</span> <span class="op">(</span> x <span class="op">/</span> l <span class="op">);</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        ret <span class="op">-=</span> <span class="op">(</span>r <span class="op">-</span> l <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> getMu<span class="op">(</span>x <span class="op">/</span> l<span class="op">);</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">&#125;</span> </span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> _mu<span class="op">[</span>n <span class="op">/</span> x<span class="op">]</span> <span class="op">=</span> ret<span class="op">;</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="op">&#125;</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="dt">signed</span> main<span class="op">()</span> <span class="op">&#123;</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    sieve<span class="op">();</span> cin <span class="op">&gt;&gt;</span> T<span class="op">;</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>T<span class="op">--)</span> <span class="op">&#123;</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        cin <span class="op">&gt;&gt;</span> n<span class="op">;</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        memset<span class="op">(</span>_phi<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="kw">sizeof</span> _phi<span class="op">);</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        memset<span class="op">(</span>_mu<span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="kw">sizeof</span> _mu<span class="op">);</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>        cout <span class="op">&lt;&lt;</span> getPhi<span class="op">(</span>n<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="ch">&#39; &#39;</span> <span class="op">&lt;&lt;</span> getMu<span class="op">(</span>n<span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">;</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="op">&#125;</span> </span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="op">&#125;</span></span></code></pre></div>
+<summary>code</summary>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> int long long</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> rep(i,a,b) for ( register int (i) = (a); (i) &lt;= (b); ++(i) )</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> pre(i,a,b) for ( register int (i) = (a); (i) &gt;= (b); --(i) )</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N = <span class="hljs-number">5e6</span> + <span class="hljs-number">10</span>, L = <span class="hljs-number">5e6</span>;
+<span class="hljs-keyword">int</span> T, n;
+
+<span class="hljs-keyword">int</span> prime[N], cnt, phi[N], mu[N];
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sieve</span><span class="hljs-params">()</span> </span>&#123;
+    phi[<span class="hljs-number">1</span>] = mu[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    <span class="hljs-built_in">rep</span>(i,<span class="hljs-number">2</span>,L) &#123;
+        <span class="hljs-keyword">if</span> (phi[i] == <span class="hljs-number">0</span>) prime[++cnt] = i, phi[i] = i - <span class="hljs-number">1</span>, mu[i] = - <span class="hljs-number">1</span>;
+        <span class="hljs-built_in">rep</span>(j,<span class="hljs-number">1</span>,cnt) &#123;
+            <span class="hljs-keyword">int</span> tmp = i * prime[j];
+            <span class="hljs-keyword">if</span> (tmp &gt; L) <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">if</span> (i % prime[j] == <span class="hljs-number">0</span>) &#123;
+                phi[tmp] = prime[j] * phi[i]; mu[tmp] = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">break</span>;
+            &#125; <span class="hljs-keyword">else</span> 
+                phi[tmp] = phi[prime[j]] * phi[i]; mu[tmp] = -mu[i];
+        &#125;
+    &#125; 
+	<span class="hljs-built_in">rep</span>(i,<span class="hljs-number">2</span>,L) phi[i] = phi[i<span class="hljs-number">-1</span>] + phi[i], mu[i] = mu[i<span class="hljs-number">-1</span>] + mu[i];
+&#125;
+
+<span class="hljs-keyword">int</span> _phi[N], _mu[N];
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getPhi</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>&#123;
+	<span class="hljs-keyword">if</span> (x &lt;= L) <span class="hljs-keyword">return</span> phi[x];
+	<span class="hljs-keyword">if</span> (~_phi[n / x]) <span class="hljs-keyword">return</span> _phi[n / x];
+	<span class="hljs-keyword">int</span> ret = <span class="hljs-number">1ll</span> * x * (x + <span class="hljs-number">1</span>) &gt;&gt; <span class="hljs-number">1</span>;
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">2</span>, r; l &lt;= x; l = r+<span class="hljs-number">1</span>) &#123;
+		r = x / ( x / l );
+		ret -= (r - l + <span class="hljs-number">1</span>) * <span class="hljs-built_in">getPhi</span>(x / l);
+	&#125; 
+	<span class="hljs-keyword">return</span> _phi[n / x] = ret;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getMu</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>&#123;
+	<span class="hljs-keyword">if</span> (x &lt;= L) <span class="hljs-keyword">return</span> mu[x];
+	<span class="hljs-keyword">if</span> (~_mu[n / x]) <span class="hljs-keyword">return</span> _mu[n / x];
+	<span class="hljs-keyword">int</span> ret = <span class="hljs-number">1</span>;
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> l = <span class="hljs-number">2</span>, r; l &lt;= x; l = r + <span class="hljs-number">1</span>) &#123;
+		r = x / ( x / l );
+		ret -= (r - l + <span class="hljs-number">1</span>) * <span class="hljs-built_in">getMu</span>(x / l);
+	&#125; 
+	<span class="hljs-keyword">return</span> _mu[n / x] = ret;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;
+	<span class="hljs-built_in">sieve</span>(); cin &gt;&gt; T;
+	<span class="hljs-keyword">while</span> (T--) &#123;
+		cin &gt;&gt; n;
+		<span class="hljs-built_in">memset</span>(_phi, <span class="hljs-number">-1</span>, <span class="hljs-keyword">sizeof</span> _phi);
+		<span class="hljs-built_in">memset</span>(_mu, <span class="hljs-number">-1</span>, <span class="hljs-keyword">sizeof</span> _mu);
+		cout &lt;&lt; <span class="hljs-built_in">getPhi</span>(n) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span> &lt;&lt; <span class="hljs-built_in">getMu</span>(n) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+	&#125; 
+&#125;
+</code></pre></div>
 </details>
-<p><a href=""></a> <a href=""></a></p>
-<hr />
+<p><a href=""></a><br>
+<a href=""></a></p>
+<hr>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://loj.ac/p/6491">简单的最大公约数</a></p>
-<p>给定 <span class="math inline">\(n,k\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
-<p><span
-class="math display">\[\sum^k_{a_1=1}\sum^k_{a_2=1}\sum^k_{a_3=1}\dots\sum^k_{a_n=1}\gcd(a_1,a_2,a_3,\dots,a_n)\pmod{
-1000000007}\]</span></p>
-<p><span class="math inline">\(n,k \le 10^{11}\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>给定 <span class="markdown-them-math-inline">$n,k$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
+<p><div class="markdown-them-math-block">$$\sum^k_{a_1=1}\sum^k_{a_2=1}\sum^k_{a_3=1}\dots\sum^k_{a_n=1}\gcd(a_1,a_2,a_3,\dots,a_n)\pmod{ 1000000007}$$</div></p>
+<p><span class="markdown-them-math-inline">$n,k \le 10^{11}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 </blockquote>
-<p><a
-target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/chitchat221107.html">这里是早就写好了的题解</a><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char></span></p>
-<p><a href=""></a> <a href=""></a></p>
-<hr />
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/chitchat221107.html">这里是早就写好了的题解</a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char></span></p>
+<p><a href=""></a><br>
+<a href=""></a></p>
+<hr>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/problem/3512">DZY Loves Math IV</a></p>
-<p>给定 <span class="math inline">\(n,m\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
-<p><span class="math display">\[\sum_{i=1}^n \sum_{j=1}^m \varphi(ij)
-\pmod{1000000007}\]</span></p>
-<p><span class="math inline">\(n \le 10^5, m \le 10^9\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>给定 <span class="markdown-them-math-inline">$n,m$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
+<p><div class="markdown-them-math-block">$$\sum_{i=1}^n \sum_{j=1}^m \varphi(ij) \pmod{1000000007}$$</div></p>
+<p><span class="markdown-them-math-inline">$n \le 10^5, m \le 10^9$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 </blockquote>
-<p>考虑 <span class="math inline">\(n\)</span> 比较小<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以对每个
-<span class="math inline">\(n\)</span> 计算答案后求和<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>现在的问题是求解 <span class="math display">\[S(n, m) = \sum_{i=1}^m
-\varphi(in)\]</span></p>
-假设 <span class="math inline">\(n = pq\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其中
-<span class="math inline">\(p\)</span> 是将 <span
-class="math inline">\(n\)</span> 的所有质因子拿出一个来求积的得数<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们有
-$$
-<span class="math display">\[\begin{aligned}
-
-S(n, m) &amp; \ = \sum_{i=1}^m \varphi(in)
-\\ &amp; \ = q\sum_{i=1}^m \varphi(ip)
-\\ &amp; \ = q\sum_{i=1}^m \varphi(\frac{p}{\gcd(i, p)}) \varphi(i)
-\gcd(i, p)
-\\ &amp; \ = q\sum_{i=1}^m \varphi(\frac{p}{\gcd(i, p)}) \varphi(i)
-\sum_{d|(i, p)} \varphi(d) \qquad &amp; (\varphi * \text{I} = \text{id}
-)
-\\ &amp; \ = q\sum_{i=1}^m \varphi(i) \sum_{d|(i, p)}
-\varphi\left(\frac{dp}{\gcd(i, p)} \right)\qquad &amp; (\varphi
-是积性的)
-\\ &amp; \ = q\sum_{i=1}^m \varphi(i) \sum_{d|(i, p)}
-\varphi\left(\frac{p}{d} \right)
-\\ &amp; \ = q\sum_{d|p} \varphi\left(\frac{p}{d} \right)\sum_{i=1}^{m /
-d} \varphi(id)
-\\ &amp; \ = q\sum_{d|p} \varphi\left(\frac{p}{d} \right) S(d,
-\left\lfloor\frac md\right\rfloor)
-
-\end{aligned}\]</span>
-<p>$$</p>
-<p>递归计算即可<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>边界不再赘述<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>由于最终是 <span class="math inline">\(\left\lfloor\frac
-md\right\rfloor\)</span> 的形式<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>所以第二维的取值数是
-<span class="math inline">\(O(n\sqrt m)\)</span> 的<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>每一层要枚举的总状态数是<span
-class="math inline">\(O(\sqrt n)\)</span> 的<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此这一部分的复杂度是
-<span class="math inline">\(O(n(\sqrt n + \sqrt m))\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>考虑杜教筛的记忆化形式<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>边界本质上只需要进行一次杜教筛即可全部求出来<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>因此总时间复杂度为
-<span class="math inline">\(O(n(\sqrt n + \sqrt m) +
-m^{2/3})\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
-理论复杂度能跑 <span class="math inline">\(10^{11}\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>本机
-O2 加持下跑了 1.61s<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/submission/222627">Submission</a><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><a href=""></a> <a href=""></a></p>
-<hr />
+<p>考虑 <span class="markdown-them-math-inline">$n$</span> 比较小<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以对每个 <span class="markdown-them-math-inline">$n$</span> 计算答案后求和<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>现在的问题是求解<br>
+<div class="markdown-them-math-block">$$S(n, m) = \sum_{i=1}^m \varphi(in)$$</div></p>
+<p>假设 <span class="markdown-them-math-inline">$n = pq$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其中 <span class="markdown-them-math-inline">$p$</span> 是将 <span class="markdown-them-math-inline">$n$</span> 的所有质因子拿出一个来求积的得数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们有<br>
+$$\begin{aligned}</p>
+<p>S(n, m) &amp; \ = \sum_{i=1}^m \varphi(in)<br>
+\ &amp; \ = q\sum_{i=1}^m \varphi(ip)<br>
+\ &amp; \ = q\sum_{i=1}^m \varphi(\frac{p}{\gcd(i, p)}) \varphi(i) \gcd(i, p)<br>
+\ &amp; \ = q\sum_{i=1}^m \varphi(\frac{p}{\gcd(i, p)}) \varphi(i) \sum_{d|(i, p)} \varphi(d) \qquad &amp; (\varphi * \text{I} = \text{id} )<br>
+\ &amp; \ = q\sum_{i=1}^m \varphi(i) \sum_{d|(i, p)} \varphi\left(\frac{dp}{\gcd(i, p)} \right)\qquad &amp; (\varphi 是积性的)<br>
+\ &amp; \ = q\sum_{i=1}^m \varphi(i) \sum_{d|(i, p)} \varphi\left(\frac{p}{d} \right)<br>
+\ &amp; \ = q\sum_{d|p} \varphi\left(\frac{p}{d} \right)\sum_{i=1}^{m / d} \varphi(id)<br>
+\ &amp; \ = q\sum_{d|p} \varphi\left(\frac{p}{d} \right) S(d, \left\lfloor\frac md\right\rfloor)</p>
+<p>\end{aligned}$$</p>
+<p>递归计算即可<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>边界不再赘述<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>由于最终是 <span class="markdown-them-math-inline">$\left\lfloor\frac md\right\rfloor$</span> 的形式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>所以第二维的取值数是 <span class="markdown-them-math-inline">$O(n\sqrt m)$</span> 的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>每一层要枚举的总状态数是<span class="markdown-them-math-inline">$O(\sqrt n)$</span> 的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此这一部分的复杂度是 <span class="markdown-them-math-inline">$O(n(\sqrt n + \sqrt m))$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>考虑杜教筛的记忆化形式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>边界本质上只需要进行一次杜教筛即可全部求出来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>因此总时间复杂度为 <span class="markdown-them-math-inline">$O(n(\sqrt n + \sqrt m) + m^{2/3})$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br>
+理论复杂度能跑 <span class="markdown-them-math-inline">$10^{11}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>本机 O2 加持下跑了 1.61s<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/submission/222627">Submission</a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a href=""></a><br>
+<a href=""></a></p>
+<hr>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/problem/4916">神犇和蒟蒻</a></p>
-<p>给定 <span class="math inline">\(n,m\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
-<p><span class="math display">\[\sum_{i=1}^n \mu(i^2) \qquad
-\sum_{i=1}^n \varphi(i^2)\]</span></p>
-<p><span class="math inline">\(n \le 10^9\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>给定 <span class="markdown-them-math-inline">$n,m$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
+<p><div class="markdown-them-math-block">$$\sum_{i=1}^n \mu(i^2) \qquad \sum_{i=1}^n \varphi(i^2)$$</div></p>
+<p><span class="markdown-them-math-inline">$n \le 10^9$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 </blockquote>
-<p>没啥<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>放这题就是整点水清凉一下<span
-class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span></p>
-<p><span class="math inline">\(\mu\)</span> 那个显然答案就是 <span
-class="math inline">\(1\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
-<span class="math inline">\(\varphi\)</span>……哦想起来了<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>放这题是因为想告诉你们
-<span class="math inline">\(\varphi(n^k) =
-n^{k-1}\varphi(n)\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>挺好用的<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><span class="math inline">\(f(n) = \varphi(n) \times n\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span
-class="math inline">\(f * \text{id} = \text{id}_2\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>剩下的看代码<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/submission/222637">Submission</a><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><a href=""></a> <a href=""></a></p>
-<hr />
+<p>没啥<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>放这题就是整点水清凉一下<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span></p>
+<p><span class="markdown-them-math-inline">$\mu$</span> 那个显然答案就是 <span class="markdown-them-math-inline">$1$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br>
+<span class="markdown-them-math-inline">$\varphi$</span>……哦想起来了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>放这题是因为想告诉你们 <span class="markdown-them-math-inline">$\varphi(n^k) = n^{k-1}\varphi(n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>挺好用的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><span class="markdown-them-math-inline">$f(n) = \varphi(n) \times n$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$f * \text{id} = \text{id}_2$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>剩下的看代码<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/submission/222637">Submission</a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a href=""></a><br>
+<a href=""></a></p>
+<hr>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/problem/4176">Lucas的数论</a></p>
-<p>给定 <span class="math inline">\(n\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
-<p><span class="math display">\[\sum_{i=1}^n \sum_{j=1}^n \text d(ij)
-\pmod{1000000007}\]</span></p>
-<p><span class="math inline">\(n \le 10^9\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>给定 <span class="markdown-them-math-inline">$n$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求</p>
+<p><div class="markdown-them-math-block">$$\sum_{i=1}^n \sum_{j=1}^n \text d(ij) \pmod{1000000007}$$</div></p>
+<p><span class="markdown-them-math-inline">$n \le 10^9$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 </blockquote>
-<p>还记得 约数个数和 那题吗<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>
+<p>还记得 约数个数和 那题吗<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span><br>
 直接套那个式子</p>
-$$
-<span class="math display">\[\begin{aligned}
-
-&amp;\sum_{i=1}^n \sum_{j=1}^n \text d(ij)
-\\ = &amp; \ \sum_{i=1}^n \sum_{j=1}^n \sum_{x|i} \sum_{y|j} [gcd(x, y)
-= 1]
-\\ = &amp; \ \sum_{i=1}^n \sum_{j=1}^n \sum_{x|i} \sum_{y|j} \sum_{d|(x,
-y)}\mu(d)
-\\ = &amp; \ \sum_{x = 1} \sum_{y = 1} \sum_{d|(x, y)}\mu(d)
-\left\lfloor \frac n{x} \right\rfloor \left\lfloor \frac n{y}
-\right\rfloor
-\\ = &amp; \ \sum_{d = 1}\mu(d) \sum_{x = 1} \left\lfloor \frac n{xd}
-\right\rfloor \sum_{y = 1} \left\lfloor \frac n{yd} \right\rfloor
-
-\end{aligned}\]</span>
-<p>$$</p>
-<p>然后对 <span class="math inline">\(d\)</span> 进行数论分块<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对
-<span class="math inline">\(\mu\)</span> 采用杜教筛<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对
-<span class="math inline">\(x,y\)</span> 采用二次数论分块<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>根据<a
-target="_blank" rel="noopener" href="https://www.cnblogs.com/CDOI-24374/p/16531615.html#%E6%9D%A8%E5%8D%93%E5%87%A1%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AE%9A%E7%90%86">杨卓凡第一小定理(?)</a>可知总时间复杂度为
-<span class="math inline">\(O(n^{3/4})\)</span><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/submission/222641">Submission</a><span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<hr />
-<p>留着别的题明天写吧<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<hr />
-<p>upd: <a
-target="_blank" rel="noopener" href="https://www.cnblogs.com/CDOI-24374/p/18017310">对杜教筛的巨大常数优化<span
-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>非递归</a></p>
+<p>$$\begin{aligned}</p>
+<p>&amp;\sum_{i=1}^n \sum_{j=1}^n \text d(ij)<br>
+\ = &amp; \ \sum_{i=1}^n \sum_{j=1}^n \sum_{x|i} \sum_{y|j} [gcd(x, y) = 1]<br>
+\ = &amp; \ \sum_{i=1}^n \sum_{j=1}^n \sum_{x|i} \sum_{y|j} \sum_{d|(x, y)}\mu(d)<br>
+\ = &amp; \ \sum_{x = 1} \sum_{y = 1} \sum_{d|(x, y)}\mu(d) \left\lfloor \frac n{x} \right\rfloor \left\lfloor \frac n{y} \right\rfloor<br>
+\ = &amp; \ \sum_{d = 1}\mu(d) \sum_{x = 1} \left\lfloor \frac n{xd} \right\rfloor \sum_{y = 1} \left\lfloor \frac n{yd} \right\rfloor</p>
+<p>\end{aligned}$$</p>
+<p>然后对 <span class="markdown-them-math-inline">$d$</span> 进行数论分块<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对 <span class="markdown-them-math-inline">$\mu$</span> 采用杜教筛<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对 <span class="markdown-them-math-inline">$x,y$</span> 采用二次数论分块<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>根据<a target="_blank" rel="noopener" href="https://www.cnblogs.com/CDOI-24374/p/16531615.html#%E6%9D%A8%E5%8D%93%E5%87%A1%E7%AC%AC%E4%B8%80%E5%B0%8F%E5%AE%9A%E7%90%86">杨卓凡第一小定理(?)</a>可知总时间复杂度为 <span class="markdown-them-math-inline">$O(n^{3/4})$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a target="_blank" rel="noopener" href="https://darkbzoj.cc/submission/222641">Submission</a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<hr>
+<p>留着别的题明天写吧<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<hr>
+<p>upd: <a target="_blank" rel="noopener" href="https://www.cnblogs.com/CDOI-24374/p/18017310">对杜教筛的巨大常数优化<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>非递归</a></p>
 <details>
-<summary>
-模板题实现
-</summary>
-<p><a
-target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/147291329">Submission</a>.</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;bits/stdc++.h&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define inline </span><span class="ex">__attribute__((__gnu_inline__, __always_inline__, __artificial__))</span><span class="pp"> </span><span class="kw">inline</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> pii <span class="op">=</span> pair<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span><span class="dt">int</span><span class="op">&gt;;</span> <span class="kw">using</span> vi <span class="op">=</span> vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;;</span> <span class="kw">using</span> vp <span class="op">=</span> vector<span class="op">&lt;</span>pii<span class="op">&gt;;</span> <span class="kw">using</span> ll <span class="op">=</span> <span class="dt">long</span> <span class="dt">long</span><span class="op">;</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> ull <span class="op">=</span> <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">long</span><span class="op">;</span> <span class="kw">using</span> db <span class="op">=</span> <span class="dt">double</span><span class="op">;</span> <span class="kw">using</span> ld <span class="op">=</span> <span class="dt">long</span> <span class="dt">double</span><span class="op">;</span> <span class="kw">using</span> lll <span class="op">=</span> __int128_t<span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T1<span class="op">,</span> <span class="kw">typename</span> T2<span class="op">&gt;</span> T1 max<span class="op">(</span>T1 a<span class="op">,</span> T2 b<span class="op">)</span> <span class="op">&#123;</span> <span class="cf">return</span> a <span class="op">&gt;</span> b <span class="op">?</span> a <span class="op">:</span> b<span class="op">;</span> <span class="op">&#125;</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">typename</span> T1<span class="op">,</span> <span class="kw">typename</span> T2<span class="op">&gt;</span> T1 min<span class="op">(</span>T1 a<span class="op">,</span> T2 b<span class="op">)</span> <span class="op">&#123;</span> <span class="cf">return</span> a <span class="op">&lt;</span> b <span class="op">?</span> a <span class="op">:</span> b<span class="op">;</span> <span class="op">&#125;</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#define multi </span><span class="dt">int</span><span class="pp"> </span>_T_<span class="op">;</span><span class="pp"> </span>cin<span class="pp"> </span><span class="op">&gt;&gt;</span><span class="pp"> </span>_T_<span class="op">;</span><span class="pp"> </span><span class="cf">for</span><span class="pp"> </span><span class="op">(</span><span class="dt">int</span><span class="pp"> </span>TestNo<span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="dv">1</span><span class="op">;</span><span class="pp"> </span>TestNo<span class="pp"> </span><span class="op">&lt;=</span><span class="pp"> </span>_T_<span class="op">;</span><span class="pp"> </span><span class="op">++</span><span class="pp"> </span>TestNo<span class="op">)</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#define timer </span>cerr<span class="pp"> </span><span class="op">&lt;&lt;</span><span class="pp"> </span><span class="fl">1.</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span>clock<span class="op">()</span><span class="pp"> </span><span class="op">/</span><span class="pp"> </span>CLOCKS_PER_SEC<span class="pp"> </span><span class="op">&lt;&lt;</span><span class="pp"> </span><span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#define iot </span>ios<span class="op">::</span>sync_with_stdio<span class="op">(</span><span class="kw">false</span><span class="op">),</span><span class="pp"> </span>cin<span class="op">.</span>tie<span class="op">(</span><span class="dv">0</span><span class="op">),</span><span class="pp"> </span>cout<span class="op">.</span>tie<span class="op">(</span><span class="dv">0</span><span class="op">);</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#define file</span><span class="op">(</span>x<span class="op">)</span><span class="pp"> </span>freopen<span class="op">(#</span>x<span class="st">&quot;.in&quot;</span><span class="op">,</span><span class="pp"> </span><span class="st">&quot;r&quot;</span><span class="op">,</span><span class="pp"> </span>stdin<span class="op">),</span><span class="pp"> </span>freopen<span class="op">(#</span>x<span class="st">&quot;.out&quot;</span><span class="op">,</span><span class="pp"> </span><span class="st">&quot;w&quot;</span><span class="op">,</span><span class="pp"> </span>stdout<span class="op">)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="pp">#define rep</span><span class="op">(</span>i<span class="op">,</span>s<span class="op">,</span>t<span class="op">)</span><span class="pp"> </span><span class="cf">for</span><span class="pp"> </span><span class="op">(</span><span class="at">register</span><span class="pp"> </span><span class="dt">int</span><span class="pp"> </span>i<span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="op">(</span>s<span class="op">),</span><span class="pp"> </span>i<span class="op">##</span>_<span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="op">(</span>t<span class="op">)</span><span class="pp"> </span><span class="op">+</span><span class="pp"> </span><span class="dv">1</span><span class="op">;</span><span class="pp"> </span>i<span class="pp"> </span><span class="op">&lt;</span><span class="pp"> </span>i<span class="op">##</span>_<span class="op">;</span><span class="pp"> </span><span class="op">++</span><span class="pp"> </span>i<span class="op">)</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="pp">#define pre</span><span class="op">(</span>i<span class="op">,</span>s<span class="op">,</span>t<span class="op">)</span><span class="pp"> </span><span class="cf">for</span><span class="pp"> </span><span class="op">(</span><span class="at">register</span><span class="pp"> </span><span class="dt">int</span><span class="pp"> </span>i<span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="op">(</span>s<span class="op">),</span><span class="pp"> </span>i<span class="op">##</span>_<span class="pp"> </span><span class="op">=</span><span class="pp"> </span><span class="op">(</span>t<span class="op">)</span><span class="pp"> </span><span class="op">-</span><span class="pp"> </span><span class="dv">1</span><span class="op">;</span><span class="pp"> </span>i<span class="pp"> </span><span class="op">&gt;</span><span class="pp"> </span>i<span class="op">##</span>_<span class="op">;</span><span class="pp"> </span><span class="op">--</span><span class="pp"> </span>i<span class="op">)</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="pp">#define eb </span>emplace_back</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="pp">#define pb </span>pop_back</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="dt">int</span> N <span class="op">=</span> <span class="fl">4e6</span> <span class="op">+</span> <span class="dv">10</span><span class="op">;</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> <span class="dt">int</span> inf <span class="op">=</span> <span class="bn">0x3f3f3f3f</span><span class="op">;</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="at">const</span> ll infll <span class="op">=</span> <span class="bn">0x3f3f3f3f3f3f3f3f</span><span class="bu">ll</span><span class="op">;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>ll n<span class="op">,</span> th<span class="op">,</span> mp<span class="op">[</span>N<span class="op">],</span> lp<span class="op">[</span>N<span class="op">],</span> ilp<span class="op">[</span>N<span class="op">],</span> lv<span class="op">[</span>N<span class="op">],</span> cntl<span class="op">;</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>ll phimp<span class="op">[</span>N<span class="op">],</span> mump<span class="op">[</span>N<span class="op">];</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> T<span class="op">[</span>N<span class="op">],</span> cT<span class="op">;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>db iv<span class="op">[</span>N<span class="op">];</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>ll phi<span class="op">[</span>N<span class="op">],</span> mu<span class="op">[</span>N<span class="op">],</span> pri<span class="op">[</span>N<span class="op">],</span> cntp<span class="op">;</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> sieve<span class="op">(</span><span class="dt">int</span> N<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    phi<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> mu<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">2</span><span class="op">,</span>N<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(!</span>phi<span class="op">[</span>i<span class="op">])</span> pri<span class="op">[++</span> cntp<span class="op">]</span> <span class="op">=</span> i<span class="op">,</span> phi<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> i <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> mu<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        rep<span class="op">(</span>j<span class="op">,</span><span class="dv">1</span><span class="op">,</span>cntp<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>i <span class="op">*</span> pri<span class="op">[</span>j<span class="op">]</span> <span class="op">&gt;</span> N<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>i <span class="op">%</span> pri<span class="op">[</span>j<span class="op">]</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                phi<span class="op">[</span>i <span class="op">*</span> pri<span class="op">[</span>j<span class="op">]]</span> <span class="op">=</span> phi<span class="op">[</span>i<span class="op">]</span> <span class="op">*</span> pri<span class="op">[</span>j<span class="op">],</span> mu<span class="op">[</span>i <span class="op">*</span> pri<span class="op">[</span>j<span class="op">]]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            <span class="op">&#125;</span> <span class="cf">else</span> <span class="op">&#123;</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                phi<span class="op">[</span>i <span class="op">*</span> pri<span class="op">[</span>j<span class="op">]]</span> <span class="op">=</span> phi<span class="op">[</span>i<span class="op">]</span> <span class="op">*</span> <span class="op">(</span>pri<span class="op">[</span>j<span class="op">]</span> <span class="op">-</span> <span class="dv">1</span><span class="op">),</span> mu<span class="op">[</span>i <span class="op">*</span> pri<span class="op">[</span>j<span class="op">]]</span> <span class="op">=</span> <span class="op">-</span> mu<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            <span class="op">&#125;</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="op">&#125;</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="op">&#125;</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">1</span><span class="op">,</span>N<span class="op">)</span> phi<span class="op">[</span>i<span class="op">]</span> <span class="op">+=</span> phi<span class="op">[</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">],</span> mu<span class="op">[</span>i<span class="op">]</span> <span class="op">+=</span> mu<span class="op">[</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">];</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="op">&#125;</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="pp">#define Sid</span><span class="op">(</span>n<span class="op">)</span><span class="pp"> </span><span class="op">(</span><span class="dv">1</span><span class="bu">ll</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="op">(</span>n<span class="op">)</span><span class="pp"> </span><span class="op">*</span><span class="pp"> </span><span class="op">((</span>n<span class="op">)</span><span class="pp"> </span><span class="op">+</span><span class="pp"> </span><span class="dv">1</span><span class="op">)</span><span class="pp"> </span><span class="op">/</span><span class="pp"> </span><span class="dv">2</span><span class="op">)</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SI</span><span class="op">(</span>n<span class="op">)</span><span class="pp"> </span><span class="op">(</span>n<span class="op">)</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="pp">#define Se</span><span class="op">(</span>n<span class="op">)</span><span class="pp"> </span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="dt">signed</span> main<span class="op">()</span> <span class="op">&#123;</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    cin <span class="op">&gt;&gt;</span> cT<span class="op">;</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">1</span><span class="op">,</span>cT<span class="op">)</span> cin <span class="op">&gt;&gt;</span> T<span class="op">[</span>i<span class="op">],</span> n <span class="op">=</span> max<span class="op">(</span>n<span class="op">,</span> T<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    th <span class="op">=</span> min<span class="op">(</span>N <span class="op">-</span> <span class="dv">5</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>pow<span class="op">(</span>n<span class="op">,</span> <span class="fl">2.</span><span class="op">/</span><span class="dv">3</span><span class="op">));</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    sieve<span class="op">(</span>th<span class="op">);</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">1</span><span class="op">,(</span><span class="dt">int</span><span class="op">)</span>sqrt<span class="op">(</span>n<span class="op">))</span> iv<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="fl">1.</span> <span class="op">/</span> i<span class="op">;</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">// cerr &lt;&lt; (ll)(1e10) / 10000 &lt;&lt; &#39; &#39; &lt;&lt; iv[10000] &lt;&lt; &#39; &#39; &lt;&lt; (int)((ll)(1e10) * iv[10000]) &lt;&lt; endl;</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    rep<span class="op">(</span>i<span class="op">,</span><span class="dv">1</span><span class="op">,</span>cT<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> T<span class="op">[</span>i<span class="op">];</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> th<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>            cout <span class="op">&lt;&lt;</span> phi<span class="op">[</span>n<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="ch">&#39; &#39;</span> <span class="op">&lt;&lt;</span> mu<span class="op">[</span>n<span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">;</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span><span class="op">;</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="op">&#125;</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        cntl <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span>ll l <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> r<span class="op">;</span> n <span class="op">/</span> l <span class="op">&gt;</span> th<span class="op">;</span> l <span class="op">=</span> r <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>            r <span class="op">=</span> n <span class="op">/</span> <span class="op">(</span>n <span class="op">/</span> l<span class="op">);</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>            mp<span class="op">[</span>lp<span class="op">[++</span> cntl<span class="op">]</span> <span class="op">=</span> l<span class="op">]</span> <span class="op">=</span> n <span class="op">/</span> l<span class="op">;</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>            rep<span class="op">(</span>i<span class="op">,</span>l<span class="op">,</span>r<span class="op">)</span> lv<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> l<span class="op">;</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="op">&#125;</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        pre<span class="op">(</span>i<span class="op">,</span>cntl<span class="op">,</span><span class="dv">1</span><span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>            ll nc <span class="op">=</span> mp<span class="op">[</span>lp<span class="op">[</span>i<span class="op">]],</span> sqnc <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>sqrt<span class="op">(</span>nc<span class="op">);</span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>            phimp<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> Sid<span class="op">(</span>nc<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="bu">ll</span> <span class="op">*</span> SI<span class="op">(</span>sqnc<span class="op">)</span> <span class="op">*</span> phi<span class="op">[</span>sqnc<span class="op">];</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>            mump<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> Se<span class="op">(</span>nc<span class="op">)</span> <span class="op">+</span> <span class="dv">1</span><span class="bu">ll</span> <span class="op">*</span> SI<span class="op">(</span>sqnc<span class="op">)</span> <span class="op">*</span> mu<span class="op">[</span>sqnc<span class="op">];</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>            rep<span class="op">(</span>j<span class="op">,</span><span class="dv">1</span><span class="op">,</span>sqnc<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>                <span class="dt">int</span> it <span class="op">=</span> <span class="dt">int</span><span class="op">(</span>nc <span class="op">*</span> iv<span class="op">[</span>j<span class="op">]</span> <span class="op">+</span> <span class="fl">1e-8</span><span class="op">);</span> <span class="co">// 警钟敲烂&lt;span class=&quot;bd-box&quot;&gt;&lt;h-char class=&quot;bd bd-beg&quot;&gt;&lt;h-inner&gt;：&lt;/h-inner&gt;&lt;/h-char&gt;&lt;/span&gt;如果 nc mod j = 0 则需要 + eps 防丢精</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>                phimp<span class="op">[</span>i<span class="op">]</span> <span class="op">-=</span> <span class="dv">1</span><span class="bu">ll</span> <span class="op">*</span> <span class="op">(</span>phi<span class="op">[</span>j<span class="op">]</span> <span class="op">-</span> phi<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">])</span> <span class="op">*</span> SI<span class="op">(</span>it<span class="op">);</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>                mump<span class="op">[</span>i<span class="op">]</span> <span class="op">-=</span> <span class="dv">1</span><span class="bu">ll</span> <span class="op">*</span> <span class="op">(</span>mu<span class="op">[</span>j<span class="op">]</span> <span class="op">-</span> mu<span class="op">[</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">])</span> <span class="op">*</span> SI<span class="op">(</span>it<span class="op">);</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="op">(</span>j <span class="op">&gt;</span> <span class="dv">1</span><span class="op">)</span> <span class="cf">if</span> <span class="op">(</span>it <span class="op">&lt;=</span> th<span class="op">)</span> <span class="op">&#123;</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>                    phimp<span class="op">[</span>i<span class="op">]</span> <span class="op">-=</span> phi<span class="op">[</span>it<span class="op">];</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>                    mump<span class="op">[</span>i<span class="op">]</span> <span class="op">-=</span> mu<span class="op">[</span>it<span class="op">];</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>                <span class="op">&#125;</span> <span class="cf">else</span> <span class="op">&#123;</span></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>                    phimp<span class="op">[</span>i<span class="op">]</span> <span class="op">-=</span> phimp<span class="op">[</span>lv<span class="op">[</span>lp<span class="op">[</span>i<span class="op">]</span> <span class="op">*</span> j<span class="op">]];</span></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>                    mump<span class="op">[</span>i<span class="op">]</span> <span class="op">-=</span> mump<span class="op">[</span>lv<span class="op">[</span>lp<span class="op">[</span>i<span class="op">]</span> <span class="op">*</span> j<span class="op">]];</span></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>                <span class="op">&#125;</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>            <span class="op">&#125;</span></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>            <span class="co">// cerr &lt;&lt; &quot;Partial answer : &quot; &lt;&lt; nc &lt;&lt; &#39; &#39; &lt;&lt; sqnc &lt;&lt; &#39; &#39; &lt;&lt; phimp[i] &lt;&lt; &#39; &#39; &lt;&lt; mump[i] &lt;&lt; endl;</span></span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>        <span class="op">&#125;</span> </span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        cout <span class="op">&lt;&lt;</span> phimp<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="ch">&#39; &#39;</span> <span class="op">&lt;&lt;</span> mump<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">&lt;&lt;</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">;</span></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>    <span class="op">&#125;</span></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="op">&#125;</span></span></code></pre></div>
-</details>
+<summary>模板题实现</summary>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/147291329">Submission</a>.</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> inline __attribute__((__gnu_inline__, __always_inline__, __artificial__)) inline</span>
+<span class="hljs-keyword">using</span> pii = pair&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;; <span class="hljs-keyword">using</span> vi = vector&lt;<span class="hljs-keyword">int</span>&gt;; <span class="hljs-keyword">using</span> vp = vector&lt;pii&gt;; <span class="hljs-keyword">using</span> ll = <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>; 
+<span class="hljs-keyword">using</span> ull = <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>; <span class="hljs-keyword">using</span> db = <span class="hljs-keyword">double</span>; <span class="hljs-keyword">using</span> ld = <span class="hljs-keyword">long</span> <span class="hljs-keyword">double</span>; <span class="hljs-keyword">using</span> lll = <span class="hljs-keyword">__int128_t</span>;
+<span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt; T1 <span class="hljs-title">max</span><span class="hljs-params">(T1 a, T2 b)</span> </span>&#123; <span class="hljs-keyword">return</span> a &gt; b ? a : b; &#125;
+<span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T1, <span class="hljs-keyword">typename</span> T2&gt; T1 <span class="hljs-title">min</span><span class="hljs-params">(T1 a, T2 b)</span> </span>&#123; <span class="hljs-keyword">return</span> a &lt; b ? a : b; &#125;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> multi int _T_; cin &gt;&gt; _T_; for (int TestNo = 1; TestNo &lt;= _T_; ++ TestNo)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> timer cerr &lt;&lt; 1. * clock() / CLOCKS_PER_SEC &lt;&lt; <span class="hljs-meta-string">&#x27;\n&#x27;</span>;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> iot ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> file(x) freopen(#x<span class="hljs-meta-string">&quot;.in&quot;</span>, <span class="hljs-meta-string">&quot;r&quot;</span>, stdin), freopen(#x<span class="hljs-meta-string">&quot;.out&quot;</span>, <span class="hljs-meta-string">&quot;w&quot;</span>, stdout)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> rep(i,s,t) for (register int i = (s), i##_ = (t) + 1; i &lt; i##_; ++ i)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> pre(i,s,t) for (register int i = (s), i##_ = (t) - 1; i &gt; i##_; -- i)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> eb emplace_back</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> pb pop_back</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N = <span class="hljs-number">4e6</span> + <span class="hljs-number">10</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> inf = <span class="hljs-number">0x3f3f3f3f</span>;
+<span class="hljs-keyword">const</span> ll infll = <span class="hljs-number">0x3f3f3f3f3f3f3f3f</span>ll;
+ll n, th, mp[N], lp[N], ilp[N], lv[N], cntl;
+ll phimp[N], mump[N];
+<span class="hljs-keyword">int</span> T[N], cT;
+db iv[N];
 
+ll phi[N], mu[N], pri[N], cntp;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sieve</span><span class="hljs-params">(<span class="hljs-keyword">int</span> N)</span> </span>&#123;
+    phi[<span class="hljs-number">1</span>] = mu[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    <span class="hljs-built_in">rep</span>(i,<span class="hljs-number">2</span>,N) &#123;
+        <span class="hljs-keyword">if</span> (!phi[i]) pri[++ cntp] = i, phi[i] = i - <span class="hljs-number">1</span>, mu[i] = <span class="hljs-number">-1</span>;
+        <span class="hljs-built_in">rep</span>(j,<span class="hljs-number">1</span>,cntp) &#123;
+            <span class="hljs-keyword">if</span> (i * pri[j] &gt; N) <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">if</span> (i % pri[j] == <span class="hljs-number">0</span>) &#123;
+                phi[i * pri[j]] = phi[i] * pri[j], mu[i * pri[j]] = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">break</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                phi[i * pri[j]] = phi[i] * (pri[j] - <span class="hljs-number">1</span>), mu[i * pri[j]] = - mu[i];
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-built_in">rep</span>(i,<span class="hljs-number">1</span>,N) phi[i] += phi[i - <span class="hljs-number">1</span>], mu[i] += mu[i - <span class="hljs-number">1</span>];
+&#125;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> Sid(n) (1ll * (n) * ((n) + 1) / 2)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> SI(n) (n)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> Se(n) (1)</span>
+
+<span class="hljs-function"><span class="hljs-keyword">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;
+    cin &gt;&gt; cT;
+    <span class="hljs-built_in">rep</span>(i,<span class="hljs-number">1</span>,cT) cin &gt;&gt; T[i], n = <span class="hljs-built_in">max</span>(n, T[i]);
+    th = <span class="hljs-built_in">min</span>(N - <span class="hljs-number">5</span>, (<span class="hljs-keyword">int</span>)<span class="hljs-built_in">pow</span>(n, <span class="hljs-number">2.</span>/<span class="hljs-number">3</span>));
+    <span class="hljs-built_in">sieve</span>(th);
+    <span class="hljs-built_in">rep</span>(i,<span class="hljs-number">1</span>,(<span class="hljs-keyword">int</span>)<span class="hljs-built_in">sqrt</span>(n)) iv[i] = <span class="hljs-number">1.</span> / i;
+    <span class="hljs-comment">// cerr &lt;&lt; (ll)(1e10) / 10000 &lt;&lt; &#x27; &#x27; &lt;&lt; iv[10000] &lt;&lt; &#x27; &#x27; &lt;&lt; (int)((ll)(1e10) * iv[10000]) &lt;&lt; endl;</span>
+    <span class="hljs-built_in">rep</span>(i,<span class="hljs-number">1</span>,cT) &#123;
+        n = T[i];
+        <span class="hljs-keyword">if</span> (n &lt;= th) &#123;
+            cout &lt;&lt; phi[n] &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span> &lt;&lt; mu[n] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+            <span class="hljs-keyword">continue</span>;
+        &#125;
+        cntl = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (ll l = <span class="hljs-number">1</span>, r; n / l &gt; th; l = r + <span class="hljs-number">1</span>) &#123;
+            r = n / (n / l);
+            mp[lp[++ cntl] = l] = n / l;
+            <span class="hljs-built_in">rep</span>(i,l,r) lv[i] = l;
+        &#125;
+        <span class="hljs-built_in">pre</span>(i,cntl,<span class="hljs-number">1</span>) &#123;
+            ll nc = mp[lp[i]], sqnc = (<span class="hljs-keyword">int</span>)<span class="hljs-built_in">sqrt</span>(nc);
+            phimp[i] = <span class="hljs-built_in">Sid</span>(nc) + <span class="hljs-number">1ll</span> * <span class="hljs-built_in">SI</span>(sqnc) * phi[sqnc];
+            mump[i] = <span class="hljs-built_in">Se</span>(nc) + <span class="hljs-number">1ll</span> * <span class="hljs-built_in">SI</span>(sqnc) * mu[sqnc];
+            <span class="hljs-built_in">rep</span>(j,<span class="hljs-number">1</span>,sqnc) &#123;
+                <span class="hljs-keyword">int</span> it = <span class="hljs-built_in"><span class="hljs-keyword">int</span></span>(nc * iv[j] + <span class="hljs-number">1e-8</span>); <span class="hljs-comment">// 警钟敲烂&lt;span class=&quot;bd-box&quot;&gt;&lt;h-char class=&quot;bd bd-beg&quot;&gt;&lt;h-inner&gt;：&lt;/h-inner&gt;&lt;/h-char&gt;&lt;/span&gt;如果 nc mod j = 0 则需要 + eps 防丢精</span>
+                phimp[i] -= <span class="hljs-number">1ll</span> * (phi[j] - phi[j - <span class="hljs-number">1</span>]) * <span class="hljs-built_in">SI</span>(it);
+                mump[i] -= <span class="hljs-number">1ll</span> * (mu[j] - mu[j - <span class="hljs-number">1</span>]) * <span class="hljs-built_in">SI</span>(it);
+                <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> (it &lt;= th) &#123;
+                    phimp[i] -= phi[it];
+                    mump[i] -= mu[it];
+                &#125; <span class="hljs-keyword">else</span> &#123;
+                    phimp[i] -= phimp[lv[lp[i] * j]];
+                    mump[i] -= mump[lv[lp[i] * j]];
+                &#125;
+            &#125;
+            <span class="hljs-comment">// cerr &lt;&lt; &quot;Partial answer : &quot; &lt;&lt; nc &lt;&lt; &#x27; &#x27; &lt;&lt; sqnc &lt;&lt; &#x27; &#x27; &lt;&lt; phimp[i] &lt;&lt; &#x27; &#x27; &lt;&lt; mump[i] &lt;&lt; endl;</span>
+        &#125; 
+
+        cout &lt;&lt; phimp[<span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span> &lt;&lt; mump[<span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    &#125;
+&#125;
+</code></pre></div>
+</details>
       
     </div>
     <footer class="article-footer">
@@ -562,7 +369,7 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#c
   
   
     <a href="/2024/08/05/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E6%89%A9%E5%85%85%E7%8A%B6%E6%80%81%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%9D%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">
         
           概率密度扩充状态的一个尝试
