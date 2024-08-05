@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>概率密度扩充状态的一个尝试 | joke3579</title>
+  <link rel="stylesheet" href="/css/fonts/Chinese-normal-normal.min.css">
+  <link rel="stylesheet" href="/css/fonts/ChineseMono-normal-normal.min.css">
+  <link rel="stylesheet" href="/css/fonts/Chinese-italic-normal.min.css">
+  <link rel="stylesheet" href="/css/fonts/Chinese-normal-bold.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="概率密度扩充状态">
+  
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox-1.3.4.css">
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div id="nav-outer">
+  <nav id="main-nav" class="outer">
+    <a id="main-nav-toggle" class="nav-icon"></a>
+    
+      <a class="main-nav-link" href="/">首页</a>
+    
+      <a class="main-nav-link" href="/archives">归档</a>
+    
+    <div class="main-nav-space-between"></div>
+    
+  </nav>
+</div>
+<div id="header-title">
+  <h1 id="logo-wrap">
+    <a href="/" id="logo">Dr. Zhow</a>
+  </h1>
+  
+</div>
+
+      <div id="content" class="outer">
+        <section id="main"><article id="post-概率密度扩充状态的一个尝试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/08/05/%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E6%89%A9%E5%85%85%E7%8A%B6%E6%80%81%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%9D%E8%AF%95/" class="article-date">
+  <time class="dt-published" datetime="2024-08-05T07:10:23.000Z" itemprop="datePublished">2024-08-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      概率密度扩充状态的一个尝试
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>回顾我们熟知的一系列排列计数问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>它们都以上升/下降相关的限制著称<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>一个长度为 <span class="markdown-them-math-inline">$n$</span> 的排列可以通过观察两项间大小关系得到一个长度为 <span class="markdown-them-math-inline">$n - 1$</span> 的由 <code>&gt;</code> 和 <code>&lt;</code> 组成的符号列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对应的限制加在这符号列上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br>
+例如<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><a target="_blank" rel="noopener" href="https://loj.ac/p/6731">小孩召开法</a>计数了限制最长交错子符号列长度的排列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而这子列以 <code>&gt;</code> 起始<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>相邻两个符号不同<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P7289">Chasse Neige</a> 计数了序列以 <code>&lt;</code> 起始<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><code>&lt;</code> 终止且限制峰个数的排列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其中一个峰是结构 <code>&lt;&gt;</code><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>对此计数问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>一种常用的转化手段是让选择某元素的可行性彼此独立<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这样对下降的刻画就会变得相对简单<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>因此我们使用概率密度扩充状态<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span><a target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/-/chitchat240621">咋想到的啊<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span></a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>让限制条件导出的 bgf 的系数是对应序列末尾元素的概率密度函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们只需要求在实数列末尾加一个实数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从而添加一个 <code>&gt;</code> 或 <code>&lt;</code><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从而得到最终的符号列的分布<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>进而还原计数序列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>到这里可能导出两种结构<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>第一种只需要一个 bgf<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这样处理相对简单<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不再赘述<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>例题如<a target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/-/chitchat240621">新年的军队</a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由于前一个符号对答案/总数量的统计没有影响<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们只需要讨论当前的符号<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此对原概率密度函数求原函数即可<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求解微分方程的方法应当是较为简单的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>但更多的时候<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们需要计数更大的结构<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如峰或交错子符号列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这时我们就需要多个 bgf 来记录该位置前的部分信息<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>多个关系直接导出的是微分方程组<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这样我们就只能<s>解微分方程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>处理矩阵对角化<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>矩阵求逆<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>化简公式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>展开分母<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>处理 Algebraic GF<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>给最后的数列算整式递推</s><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span></p>
+<p>这时的微分方程一般具有特殊性质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>由于我们只需要对先前的概率密度函数做积分来得到当前的分布<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>得到的微分方程大多是一阶的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>同时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>微分方程是对概率密度函数的变元进行的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其余占位元均可视为常数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>而我们的目的是将微分方程组拆解成彼此无关的几个线性方程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>自然想到对角化<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>好像说的有点抽象<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>以小孩召开法为例<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>令长为 <span class="markdown-them-math-inline">$n$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>最长交错子列长度为 <span class="markdown-them-math-inline">$k$</span> 且末尾符号为 <code>&lt;</code>/<code>&gt;</code> 的符号列关于末尾位置的概率密度函数为 <span class="markdown-them-math-inline">$[x^nq^k] A(x,q,t)$</span> / <span class="markdown-them-math-inline">$[x^nq^k] D(x,q,t)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>容易知道 <span class="markdown-them-math-inline">$n![x^{n - 1} q^{K-1}]\int_0^1 (A(t) + D(t)) \mathrm dt$</span> 即为最终答案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这是由于后面提取系数的部分得到了满足条件的符号列的分布<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即任意选择一个排列满足要求的概率<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>根据转移<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>直接列出方程</p>
+<p><div class="markdown-them-math-block">$$\begin{aligned}
+&amp; A(t) = 1 + x\int_0^t (A(u) + qD(u)) \mathrm du
+\\ &amp; D(t) = x \int_t^1 (qA(u) + D(u)) \mathrm du
+\end{aligned}$$</div></p>
+<p>两侧对 <span class="markdown-them-math-inline">$t$</span> 求导<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并写作矩阵形式得到</p>
+<p><div class="markdown-them-math-block">$$\frac{\mathrm d}{\mathrm dt} { {A}\brack{D} } = x\begin{bmatrix} 1 &amp; q \\ -q &amp; -1\end{bmatrix}  { {A}\brack{D} }$$</div></p>
+<p>这时注意到右侧的变换其实对 <span class="markdown-them-math-inline">$t$</span> 是一个常数矩阵<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对角化为 <span class="markdown-them-math-inline">$X^{-1}\Lambda X$</span> 后左右左乘 <span class="markdown-them-math-inline">$X$</span> 即有</p>
+<p><div class="markdown-them-math-block">$$\frac{\mathrm d}{\mathrm dt}\left( X{ {A}\brack{D} }\right) = x\Lambda \left(X { {A}\brack{D} }\right)$$</div></p>
+<p>因此令</p>
+<p><div class="markdown-them-math-block">$${ {U}\brack{V} } = X{ {A}\brack{D} }$$</div></p>
+<p>就有</p>
+<p><div class="markdown-them-math-block">$$\frac{\mathrm d}{\mathrm dt}{ {U}\brack{V} } = x\Lambda{ {U}\brack{V} }$$</div></p>
+<p>而由于 <span class="markdown-them-math-inline">$x\Lambda$</span> 为对角矩阵<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们成功地将这微分方程组拆解成了</p>
+<p><div class="markdown-them-math-block">$$\begin{aligned}
+&amp; U' = x\Lambda _{1,1}(q) U
+\\ &amp; V' = x\Lambda _{2,2}(q) V
+\end{aligned}$$</div></p>
+<p>熟知一阶线性微分方程的解<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里就先暂停一下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>列出 <span class="markdown-them-math-inline">$X$</span> 和 <span class="markdown-them-math-inline">$\Lambda$</span> 的具体值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这样方便后面式子的化简<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>下面使用 mma 进行推导<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><br>
+<s><span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>joke3579<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>你太依赖 mma 了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>可是 mma 真的很好用啊<span class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span></s><br>
+可以用 <a target="_blank" rel="noopener" href="https://reference.wolfram.com/language/ref/DiagonalizableMatrixQ.html.zh"><code>DiagonalizableMatrixQ[A]</code></a> 判断矩阵是否可对角化<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><a target="_blank" rel="noopener" href="https://reference.wolfram.com/language/ref/JordanDecomposition.html.zh"><code>JordanDecomposition[A]</code></a> 对角化矩阵<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其返回 <span class="markdown-them-math-inline">$\left\{X^{-1}, \Lambda\right\}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>下面就用 mma 对角化出来的矩阵推吧<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们知道</p>
+<p><div class="markdown-them-math-block">$$\Lambda = \begin{bmatrix} -\sqrt{1-q^2} &amp;  \\  &amp; \sqrt{1-q^2}\end{bmatrix}$$</div></p>
+<p><div class="markdown-them-math-block">$$\begin{aligned}
+X &amp;= \begin{bmatrix} \dfrac{q}{2\sqrt{1-q^2} } &amp; \dfrac{-1-\sqrt{1-q^2} }{2\sqrt{1-q^2} } \\  \dfrac{-q}{2\sqrt{1-q^2} } &amp;\dfrac{-1+\sqrt{1-q^2} }{2\sqrt{1-q^2} }\end{bmatrix}
+\\
+X^{-1} &amp;= \begin{bmatrix} q^{-1}\left(-1+\sqrt{1-q^2}\right) &amp; q^{-1}\left(-1-\sqrt{1-q^2}\right) \\ 1 &amp; 1 \end{bmatrix}
+\end{aligned}$$</div></p>
+<p>而</p>
+<p><div class="markdown-them-math-block">$$\begin{aligned}
+&amp; U = C_1 \exp\left(-xt\sqrt{1-q^2}\right)
+\\ &amp; V = C_2 \exp\left(xt\sqrt{1-q^2}\right)
+\end{aligned}$$</div></p>
+<p>由 <span class="markdown-them-math-inline">$[A, D]^{\mathsf T} = X [U, V]^{\mathsf T}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>左右左乘 <span class="markdown-them-math-inline">$X^{-1}$</span> 得到</p>
+<p><div class="markdown-them-math-block">$$\begin{aligned}
+&amp; A = \frac{-1+\sqrt{1-q^2} }{q} U + \frac{-1-\sqrt{1-q^2} }q V
+\\ &amp; B = U + V
+\end{aligned}$$</div></p>
+<p><span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>仿照新年的军队之手法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>令 <span class="markdown-them-math-inline">$\mathscr A = \int_0^1 A(t)\mathrm dt$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\mathscr D = \int_0^1 D(t)\mathrm dt$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>它们是以 <span class="markdown-them-math-inline">$x, q$</span> 为占位元的 bgf<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>组合意义上是所有满足约束条件的符号列的分布<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也就是开始时提到的<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>最终答案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>的一部分<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>为了解出常数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们需要边界条件<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这时目光回到转移方程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>带入 <span class="markdown-them-math-inline">$t = 0$</span> 得到</p>
+<p><div class="markdown-them-math-block">$$A(0) = 1,\qquad D(0) = x \int_0^1 (qA(u) + D(u)) \mathrm du = x(q\mathscr A + \mathscr D)$$</div><br>
+<div class="markdown-them-math-block">$$U = C_1, \qquad V = C_2$$</div></p>
+<p>带入 <span class="markdown-them-math-inline">$t = 1$</span> 得到</p>
+<p><div class="markdown-them-math-block">$$A(1) = 1 + x\int_0^1 (A(u) + qD(u)) \mathrm du = 1 + x(\mathscr A + q\mathscr D), \qquad D(1) = 0$$</div><br>
+<div class="markdown-them-math-block">$$U = C_1\exp\left(-x\sqrt{1-q^2}\right), \qquad V = C_2\exp\left(x\sqrt{1-q^2}\right)$$</div></p>
+<p>令 <span class="markdown-them-math-inline">$r = \sqrt{1-q^2}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>解上面的方程组得到</p>
+<p><div class="markdown-them-math-block">$$x(\mathscr A + \mathscr D) = \frac{(e^{rx}-1)(q + r + e^{rx}+qe^{rx} - re^{rx} + 1)}{(q + 1)(r - e^{2rx} + re^{2rx} + 1)}$$</div></p>
+<p>由上面的讨论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>首先提取 <span class="markdown-them-math-inline">$\left[\dfrac{x^n}{n!}\right]$</span> 得到</p>
+<p><div class="markdown-them-math-block">$$\begin{aligned}
+&amp; \left[\frac{x^n}{n!}\right] x(\mathscr A + \mathscr D)
+\\ = \ &amp; \left[\frac{x^n}{n!}\right] \frac{(e^{rx}-1)\left(q\left(1 + e^{rx}\right) + r\left(1 - e^{rx}\right) + e^{rx} + 1\right)}{(q + 1)(e^{2rx}(r-1) + r + 1)}
+\\ = \ &amp; \left[\frac{x^n}{n!}\right] \frac{(e^{rx}-1)\left(\frac{r\left(1 - e^{rx}\right)}{1+q} + e^{rx} + 1\right)}{\left(1 + e^{2rx}\frac{r-1}{r + 1}\right)(r + 1)}
+\\ = \ &amp; \left[\frac{x^n}{n!}\right]  \frac{(e^{rx}-1)\left(\frac{r\left(1 - e^{rx}\right)}{1+q} + e^{rx} + 1\right)}{r + 1} \sum_{i\ge 0} \left(e^{2rx}\frac{1 - r}{r + 1}\right)^i
+\\ = \ &amp; \left[\frac{x^n}{n!}\right] \sum_{i\ge 0} e^{2irx} \frac{(1-r)^i}{(1+r)^{i+1} } (e^{rx}-1)\left(\frac{r\left(1 - e^{rx}\right)}{1+q} + e^{rx} + 1\right)
+\\ = \ &amp; \left[\frac{x^n}{n!}\right] \sum_{i\ge 0} e^{2irx} \frac{(1-r)^i}{(1+r)^{i+1} } \left(\frac{-r\left(1 - e^{rx}\right)^2}{1+q} + e^{2rx} - 1\right)
+\\ = \ &amp; \left[\frac{x^n}{n!}\right] \sum_{i\ge 0} \frac{(1-r)^i}{(1+r)^{i+1} } \left(\frac{-r}{1 + q}\left(e^{2irx} + e^{(2i+2)rx} - 2e^{(2i+1)rx}\right) + e^{(2i+2)rx} - e^{2iex}\right)
+\\ = \ &amp; \sum_{i\ge 0} \frac{(1-r)^i}{(1+r)^{i+1} } \left(\frac{-r}{1 + q}\left((2i)^n + (2i+2)^n - 2(2i+1)^n\right) + (2i + 2)^n - (2i)^n\right) r^n
+\end{aligned}$$</div></p>
+<p>EI 在展开分母的时候有 typo<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>应当是展开 <span class="markdown-them-math-inline">$1-t$</span> 而非 <span class="markdown-them-math-inline">$1+t$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里由于 <span class="markdown-them-math-inline">$1-r$</span> 的最低次项为 <span class="markdown-them-math-inline">$q^2$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以只枚举 <span class="markdown-them-math-inline">$2i \le K$</span> 的所有 <span class="markdown-them-math-inline">$i$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>由于求幂可以 <span class="markdown-them-math-inline">$O(n \log_Kn)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>系数可以预处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>最后只需要解决对一行 <span class="markdown-them-math-inline">$i$</span> 提取 <span class="markdown-them-math-inline">$[q^{K-1}] \dfrac{r^n(1-r)^i}{(1+r)^{i + 1} }$</span> 和 <span class="markdown-them-math-inline">$[q^{K-1}] \dfrac{r^{n+1}(1-r)^i}{(q + 1)(1+r)^{i + 1} }$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>可以按<a target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/-/chitchat240618">鰰的方法</a>粗暴处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><a target="_blank" rel="noopener" href="https://loj.ac/s/2087205">但 2log 会 t</a><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>当然可以更快地做<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>首先看第一个<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>套用<a target="_blank" rel="noopener" href="https://www.cnblogs.com/joke3579/p/-/chitchat240618">这篇闲话</a>里的记号<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们知道</p>
+<p><div class="markdown-them-math-block">$$f(q) = \frac{1 - \sqrt{1 - q^2} }{1 + \sqrt{1 - q^2} }, \qquad g(q) = \frac{(1 - q^2)^{n/2} }{1 + \sqrt{1 - q^2} }$$</div></p>
+<p>注意到 <span class="markdown-them-math-inline">$\text{ord } f = 2$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这是由于 <span class="markdown-them-math-inline">$f(0) = 0$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即其无常数项<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>且 <span class="markdown-them-math-inline">$f(\sqrt q)$</span> 为多项式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并有 <span class="markdown-them-math-inline">$\lim\limits_{q\to 0} f(\sqrt q)/q = 1/4$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这样我们就将问题确定为了 <span class="markdown-them-math-inline">$3.$</span> 情况<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>此时有 <span class="markdown-them-math-inline">$d = 2, c = 1/4$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此令 <span class="markdown-them-math-inline">$F(x) = \sqrt{4f(x)}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>易求得 <span class="markdown-them-math-inline">$h(x) = F^{\langle -1 \rangle}(x) = \dfrac{4x}{x^2 + 4}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>就有</p>
+<p><div class="markdown-them-math-block">$$[q^{K-1}] \dfrac{r^n(1-r)^i}{(1+r)^{i + 1} } = \frac{1}{4^i}[x^{K - 1}] g(x) F(x)^{2i} = 4^{-i}[x^{K - 1 - 2i}] g\left(h(x)\right) h'(x) \left(\frac{x}{h(x)}\right)^K$$</div></p>
+<p>随便做就能 <span class="markdown-them-math-inline">$O(n\log n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>由于最后是 d-finite 的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以做到 <span class="markdown-them-math-inline">$O(n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>第二个一样<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这时有</p>
+<p><div class="markdown-them-math-block">$$h(x) = \frac{4x}{x^2 + 4}, \qquad g(x) = \frac{\left(1 - x^2\right)^{(n + 1)/2} }{(1 + x)\left(1 + \sqrt{1 - x^2}\right)}$$</div></p>
+<p>随便做就能 <span class="markdown-them-math-inline">$O(n\log n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>由于最后是 d-finite 的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以做到 <span class="markdown-them-math-inline">$O(n)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>这样我们就把 EI 的做法补完了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>虽然我不太会用偶的自动机推这个<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>但我至少会推其中一部分的系数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这样就能把带 <span class="markdown-them-math-inline">$\log$</span> 的部分缩减到几次乘法除法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>可以通过<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><a target="_blank" rel="noopener" href="https://loj.ac/s/2087979">Submission</a>.</p>
+<h2 id="reference:">Reference:</h2>
+<p>[1] <a target="_blank" rel="noopener" href="https://www.luogu.com/article/5qktkzz9">Elegia et al.<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>小孩召开法的一个尝试</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      Copyright &copy; 2024 joke3579<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a><br>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+</nav>
+    
+
+<script src="/js/clipboard.min.js"></script>
+<script src="/js/jquery-1.4.3.min.js"></script>
+
+<script src="/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+<script>
+  MathJax = {
+    options: {
+      enableMenu: false
+    },
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    }
+  };
+</script>
+<!-- <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    CommonHTML: {
+      linebreaks: false
+    }
+  });
+  </script> -->
+<script type="text/javascript" id="MathJax-script" async
+  src="/mathjax/tex-chtml.js">
+</script>
+<!-- <script type="text/javascript"
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML">
+</script> -->
+
+  </div>
+</body>
+</html>
