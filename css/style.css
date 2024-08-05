@@ -93,178 +93,213 @@ body:after {
 .article-entry dt {
   font-weight: bold;
 }
+.article-with-titlenum {
+  counter-reset: h2;
+}
+.article-with-titlenum h2 {
+  counter-reset: h3;
+}
+.article-with-titlenum h2:before {
+  padding-right: 1em;
+  counter-increment: h2;
+  content: counter(h2);
+}
+.article-with-titlenum h3 {
+  counter-reset: h4;
+}
+.article-with-titlenum h3:before {
+  padding-right: 1em;
+  counter-increment: h3;
+  content: counter(h2) "." counter(h3);
+}
+.article-with-titlenum h4 {
+  counter-reset: h5;
+}
+.article-with-titlenum h4:before {
+  padding-right: 1em;
+  counter-increment: h4;
+  content: counter(h2) "." counter(h3) "." counter(h4);
+}
+.article-with-titlenum h5 {
+  counter-reset: h6;
+}
+.article-with-titlenum h5:before {
+  padding-right: 1em;
+  counter-increment: h5;
+  content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5);
+}
 @media screen {
   #content,
   .outer {
-    width: 44em;
+    width: 54em;
   }
 }
 @media screen and (max-width: 810px) {
   #content,
   .outer {
-    width: 43em;
+    width: 53em;
   }
 }
 @media screen and (max-width: 790px) {
   #content,
   .outer {
-    width: 42em;
+    width: 52em;
   }
 }
 @media screen and (max-width: 770px) {
   #content,
   .outer {
-    width: 41em;
+    width: 51em;
   }
 }
 @media screen and (max-width: 750px) {
   #content,
   .outer {
-    width: 40em;
+    width: 50em;
   }
 }
 @media screen and (max-width: 730px) {
   #content,
   .outer {
-    width: 39em;
+    width: 49em;
   }
 }
 @media screen and (max-width: 710px) {
   #content,
   .outer {
-    width: 38em;
+    width: 48em;
   }
 }
 @media screen and (max-width: 690px) {
   #content,
   .outer {
-    width: 37em;
+    width: 47em;
   }
 }
 @media screen and (max-width: 670px) {
   #content,
   .outer {
-    width: 36em;
+    width: 46em;
   }
 }
 @media screen and (max-width: 650px) {
   #content,
   .outer {
-    width: 35em;
+    width: 45em;
   }
 }
 @media screen and (max-width: 630px) {
   #content,
   .outer {
-    width: 34em;
+    width: 44em;
   }
 }
 @media screen and (max-width: 610px) {
   #content,
   .outer {
-    width: 33em;
+    width: 43em;
   }
 }
 @media screen and (max-width: 590px) {
   #content,
   .outer {
-    width: 32em;
+    width: 42em;
   }
 }
 @media screen and (max-width: 570px) {
   #content,
   .outer {
-    width: 31em;
+    width: 41em;
   }
 }
 @media screen and (max-width: 550px) {
   #content,
   .outer {
-    width: 30em;
+    width: 40em;
   }
 }
 @media screen and (max-width: 530px) {
   #content,
   .outer {
-    width: 29em;
+    width: 39em;
   }
 }
 @media screen and (max-width: 510px) {
   #content,
   .outer {
-    width: 28em;
+    width: 38em;
   }
 }
 @media screen and (max-width: 490px) {
   #content,
   .outer {
-    width: 27em;
+    width: 37em;
   }
 }
 @media screen and (max-width: 470px) {
   #content,
   .outer {
-    width: 26em;
+    width: 36em;
   }
 }
 @media screen and (max-width: 454px) {
   #content,
   .outer {
-    width: 25em;
+    width: 35em;
   }
 }
 @media screen and (max-width: 438px) {
   #content,
   .outer {
-    width: 24em;
+    width: 34em;
   }
 }
 @media screen and (max-width: 422px) {
   #content,
   .outer {
-    width: 23em;
+    width: 33em;
   }
 }
 @media screen and (max-width: 406px) {
   #content,
   .outer {
-    width: 22em;
+    width: 32em;
   }
 }
 @media screen and (max-width: 390px) {
   #content,
   .outer {
-    width: 21em;
+    width: 31em;
   }
 }
 @media screen and (max-width: 374px) {
   #content,
   .outer {
-    width: 20em;
+    width: 30em;
   }
 }
 @media screen and (max-width: 358px) {
   #content,
   .outer {
-    width: 19em;
+    width: 29em;
   }
 }
 @media screen and (max-width: 342px) {
   #content,
   .outer {
-    width: 18em;
+    width: 28em;
   }
 }
 @media screen and (max-width: 326px) {
   #content,
   .outer {
-    width: 17em;
+    width: 27em;
   }
 }
 @media screen and (max-width: 310px) {
   #content,
   .outer {
-    width: 16em;
+    width: 26em;
   }
 }
 html,
@@ -783,7 +818,7 @@ a {
   transition: color 0.2s;
 }
 a.article-title:hover {
-  color: #999;
+  color: #3498db;
 }
 .article-entry {
   text-align: justify;
@@ -817,7 +852,7 @@ a.article-title:hover {
   margin: 1.65em 0 1.1em;
 }
 .article-entry a {
-  color: #999;
+  color: #3498db;
   text-decoration: none;
 }
 .article-entry a:hover {
@@ -865,6 +900,9 @@ a.article-title:hover {
   font-family: "biaodian", "LM-Roman-10", "Chinese", serif;
   margin: 1.6em 0;
   padding: 0px 2em;
+  padding: 0.25em 2em 0.25em calc(2em - 5px);
+  border-left: 5px solid #ddd;
+  background: #f7f7f7;
 }
 .article-entry blockquote strong {
   font-style: normal;
@@ -1287,7 +1325,7 @@ a.article-title:hover {
   line-height: 1.6em;
 }
 .archive-article-title:hover {
-  color: #999;
+  color: #3498db;
 }
 .archive-article-footer {
   margin-top: 1em;
@@ -1355,7 +1393,7 @@ a.article-title:hover {
   color: #555;
 }
 #footer a {
-  color: #999;
+  color: #3498db;
   text-decoration: none;
 }
 #footer a:hover {
@@ -1448,7 +1486,7 @@ a.article-title:hover {
   margin-left: 15px;
 }
 .article-entry .gist .gist-file .gist-meta a {
-  color: #999;
+  color: #3498db;
   font-weight: normal;
 }
 .article-entry .gist .gist-file .gist-meta a:hover {
