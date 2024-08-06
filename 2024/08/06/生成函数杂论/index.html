@@ -135,7 +135,7 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>�
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>且运算均由卷积定义<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在操作中我们可以只保留界以内的信息<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><span
-class="math inline">\(F(x) \bod x^n\)</span> 被称作 <span
+class="math inline">\(F(x) \mathbfod x^n\)</span> 被称作 <span
 class="math inline">\(F\)</span><span
 class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>在
 <span class="math inline">\(n\)</span> 次项内<span
@@ -731,14 +731,15 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><
 <p>对一个列 <span class="math inline">\(a_1, a_2, \dots,
 a_m\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>定义其顺序组成的向量为
-<span class="math inline">\(\b a\)</span><span
+<span class="math inline">\(\mathbf a\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里的列的元素可为占位元<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>形式幂级数或数字<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>当
-<span class="math inline">\(\b n\)</span> 由数字组成时<span
+<span class="math inline">\(\mathbf n\)</span> 由数字组成时<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>定义
-<span class="math inline">\(\b x^{\b n} = (x_1^{n_1}, x_2^{n_2}, \dots,
-x_m^{n_m}) = x_1^{n_1} x_2^{n_2}\cdots x_m^{n_m}\)</span><span
+<span class="math inline">\(\mathbf x^{\mathbf n} = (x_1^{n_1},
+x_2^{n_2}, \dots, x_m^{n_m}) = x_1^{n_1} x_2^{n_2}\cdots
+x_m^{n_m}\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它既可以作为
 <span class="math inline">\(m\)</span> 元形式幂级数的一组自变量<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也可以作为其的某一项<span
@@ -762,13 +763,16 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>�
 <span class="math inline">\(g_1, g_2, \dots, g_n\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>满足对任意
 <span class="math inline">\(k\)</span> 有</p>
-<p><span class="math display">\[f_k(\b x) = x_k g_k(\b f)\]</span></p>
+<p><span class="math display">\[f_k(\mathbf x) = x_k g_k(\mathbf
+f)\]</span></p>
 <p>则对任意 <span class="math inline">\(m\)</span> 元形式幂级数 <span
-class="math inline">\(h(\b x)\)</span><span
+class="math inline">\(h(\mathbf x)\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们有</p>
-<p><span class="math display">\[[\b t^{\b n}] h(\b f(\b t)) = [\b x^{\b
-n}] h(\b x) \b g(\b x)^{\b n} \det \left\{[i = j] - \frac{x_i}{g_j(\b
-x)}\frac{\partial g_j(\b x)}{\partial x_i} \right\}_{m, m}\]</span></p>
+<p><span class="math display">\[[\mathbf t^{\mathbf n}] h(\mathbf
+f(\mathbf t)) = [\mathbf x^{\mathbf n}] h(\mathbf x) \mathbf g(\mathbf
+x)^{\mathbf n} \det \left\{[i = j] - \frac{x_i}{g_j(\mathbf
+x)}\frac{\partial g_j(\mathbf x)}{\partial x_i} \right\}_{m,
+m}\]</span></p>
 </blockquote>
 <p>证明<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><a
@@ -800,16 +804,16 @@ class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>�
 class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>的完全图的一棵以
 <span class="math inline">\(0\)</span> 为根的内向生成树<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并令
-<span class="math inline">\(\b x\)</span> 为占位元列 <span
+<span class="math inline">\(\mathbf x\)</span> 为占位元列 <span
 class="math inline">\(x_1, x_2, \dots, x_m\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span
-class="math inline">\(\b f\)</span> 为函数列 <span
-class="math inline">\(f_0(\b x), f_1(\b x), \dots, f_m(\b
+class="math inline">\(\mathbf f\)</span> 为函数列 <span
+class="math inline">\(f_0(\mathbf x), f_1(\mathbf x), \dots, f_m(\mathbf
 x)\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>那么记</p>
-<p><span class="math display">\[\frac{\partial \b f}{\partial\mathcal T}
-= \prod_{v \in V} \left(\prod_{(u, v) \in E} \frac{\partial}{\partial
-x_u} \right) f_{v}(\b x)\]</span></p>
+<p><span class="math display">\[\frac{\partial \mathbf
+f}{\partial\mathcal T} = \prod_{v \in V} \left(\prod_{(u, v) \in E}
+\frac{\partial}{\partial x_u} \right) f_{v}(\mathbf x)\]</span></p>
 <p>注意这里每条有向边的起点都不可能为 <span
 class="math inline">\(0\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>所以占位元只有
@@ -833,14 +837,15 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>�
 <span class="math inline">\(g_1, g_2, \dots, g_n\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>满足对任意
 <span class="math inline">\(k\)</span> 有</p>
-<p><span class="math display">\[f_k(\b x) = x_k g_k(\b f)\]</span></p>
+<p><span class="math display">\[f_k(\mathbf x) = x_k g_k(\mathbf
+f)\]</span></p>
 <p>则对任意 <span class="math inline">\(m\)</span> 元形式幂级数 <span
-class="math inline">\(h(\b x)\)</span><span
+class="math inline">\(h(\mathbf x)\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们有</p>
-<p><span class="math display">\[[\b t^{\b n}] h(\b f(\b t)) =
-\frac{1}{\prod_{i =1}^m n_i} [\b x^{\b n - \b 1}] \sum_{\mathcal T}
-\frac{\partial(h, g_1^{n_1} , g_2^{n_2}, \dots,
-g_m^{n_m})}{\partial\mathcal T}\]</span></p>
+<p><span class="math display">\[[\mathbf t^{\mathbf n}] h(\mathbf
+f(\mathbf t)) = \frac{1}{\prod_{i =1}^m n_i} [\mathbf x^{\mathbf n -
+\mathbf 1}] \sum_{\mathcal T} \frac{\partial(h, g_1^{n_1} , g_2^{n_2},
+\dots, g_m^{n_m})}{\partial\mathcal T}\]</span></p>
 </blockquote>
 <p>证明<span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><a
@@ -892,11 +897,11 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><
 <p><span class="math display">\[\begin{aligned}
 &amp; [x^{n_1}y^{n_2}] h(g_1(x, y), g_2(x, y))
 \\ = \ &amp;[x^{n_1}y^{n_2}] h(x, y) g_1(x, y)^{n_1} g_2(x, y)^{n_2}
-\\ &amp; \begin{batrix} 1 - \dfrac{x_1}{g_1(x, y)}\dfrac{\partial
+\\ &amp; \begin{mathbfatrix} 1 - \dfrac{x_1}{g_1(x, y)}\dfrac{\partial
 g_1(x,y)}{\partial x_1} &amp; - \dfrac{x_1}{g_2(x, y)}\dfrac{\partial
 g_2(x,y)}{\partial x_1} \\  - \dfrac{x_2}{g_1(x, y)}\dfrac{\partial
 g_1(x,y)}{\partial x_2} &amp; 1 - \dfrac{x_2}{g_2(x, y)}\dfrac{\partial
-g_2(x,y)}{\partial x_2} \end{batrix}
+g_2(x,y)}{\partial x_2} \end{mathbfatrix}
 \end{aligned}\]</span></p>
 <p>多元拉反 <span class="math inline">\(2\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
@@ -933,12 +938,12 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char></span><
 <p><span class="math display">\[\begin{aligned}
 &amp; [x^{n}y^{n}] \exp (f_1 + f_2)
 \\ = \ &amp; [x^{n}y^{n}] e^{x + y} \left(e^y\right)^n
-\left(e^y\right)^n \begin{batrix} 1 - \dfrac{x}{e^y}\dfrac{\partial
+\left(e^y\right)^n \begin{mathbfatrix} 1 - \dfrac{x}{e^y}\dfrac{\partial
 e^y}{\partial x} &amp; - \dfrac{x}{e^x}\dfrac{\partial e^x}{\partial x}
 \\  - \dfrac{y}{e^y}\dfrac{\partial e^y}{\partial y} &amp; 1 -
-\dfrac{y}{e^x}\dfrac{\partial e^x}{\partial y} \end{batrix}
-\\ = \ &amp; [x^{n}y^{n}] e^{(n + 1)(x + y)} \begin{batrix} 1 &amp; -x
-\\  - y &amp; 1 \end{batrix}
+\dfrac{y}{e^x}\dfrac{\partial e^x}{\partial y} \end{mathbfatrix}
+\\ = \ &amp; [x^{n}y^{n}] e^{(n + 1)(x + y)} \begin{mathbfatrix} 1 &amp;
+-x \\  - y &amp; 1 \end{mathbfatrix}
 \\ = \ &amp; [x^{n}y^{n}] e^{(n + 1)(x + y)} (1-xy)
 \end{aligned}\]</span></p>
 <p>施多元拉反 <span class="math inline">\(2\)</span> 有</p>
@@ -4916,7 +4921,7 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><
   
   
     <a href="/2024/08/05/%E7%AD%9B%E6%B3%95%E7%9B%B8%E5%85%B3/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Ancien</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">
         
           筛法相关
@@ -4939,7 +4944,7 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><
     <div id="footer-info" class="inner">
       
       Copyright &copy; 2024 joke3579<br>
-      Propulsé par <a href="https://hexo.io/" target="_blank">Hexo</a><br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a><br>
       
     </div>
   </div>
