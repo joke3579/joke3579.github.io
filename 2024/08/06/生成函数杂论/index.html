@@ -780,18 +780,15 @@ target="_blank" rel="noopener" href="https://x-yi-x.blog.uoj.ac/blog/6511">留�
 class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><span
 class="math inline">\(\square\)</span></p>
 <p>如果展开的话就是</p>
-$$
-<span class="math display">\[\begin{aligned}
+<p><span class="math display">\[\begin{aligned}
 &amp; [t_1^{n_1} t_2^{n_2}\cdots t_m^{n_m}] h(f_1(t_1, t_2, \dots, t_m),
 \dots, f_m(t_1, t_2, \dots, t_m))
-
 \\ = \ &amp; [x_1^{n_1} x_2^{n_2}\cdots x_m^{n_m}] h(x_1, x_2, \dots,
 x_m) \left(\prod_{i = 1}^m g_i(x_1, x_2, \dots, x_m) ^{n_i} \right)
 \\  &amp;\det \left\{[i = j] - \frac{x_i}{g_j(x_1, x_2, \dots,
 x_m)}\frac{\partial g_j(x_1, x_2, \dots, x_m)}{\partial x_i}
 \right\}_{m, m}
-\end{aligned}\]</span>
-<p>$$</p>
+\end{aligned}\]</span></p>
 <p>这样又好看又不好看<span
 class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span></p>
 <p>但某篇论文里说这个形式不好用<span
@@ -897,11 +894,11 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><
 <p><span class="math display">\[\begin{aligned}
 &amp; [x^{n_1}y^{n_2}] h(g_1(x, y), g_2(x, y))
 \\ = \ &amp;[x^{n_1}y^{n_2}] h(x, y) g_1(x, y)^{n_1} g_2(x, y)^{n_2}
-\\ &amp; \begin{mathbfatrix} 1 - \dfrac{x_1}{g_1(x, y)}\dfrac{\partial
+\\ &amp; \begin{matrix} 1 - \dfrac{x_1}{g_1(x, y)}\dfrac{\partial
 g_1(x,y)}{\partial x_1} &amp; - \dfrac{x_1}{g_2(x, y)}\dfrac{\partial
 g_2(x,y)}{\partial x_1} \\  - \dfrac{x_2}{g_1(x, y)}\dfrac{\partial
 g_1(x,y)}{\partial x_2} &amp; 1 - \dfrac{x_2}{g_2(x, y)}\dfrac{\partial
-g_2(x,y)}{\partial x_2} \end{mathbfatrix}
+g_2(x,y)}{\partial x_2} \end{matrix}
 \end{aligned}\]</span></p>
 <p>多元拉反 <span class="math inline">\(2\)</span><span
 class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
@@ -938,12 +935,12 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>！</h-inner></h-char></span><
 <p><span class="math display">\[\begin{aligned}
 &amp; [x^{n}y^{n}] \exp (f_1 + f_2)
 \\ = \ &amp; [x^{n}y^{n}] e^{x + y} \left(e^y\right)^n
-\left(e^y\right)^n \begin{mathbfatrix} 1 - \dfrac{x}{e^y}\dfrac{\partial
+\left(e^y\right)^n \begin{matrix} 1 - \dfrac{x}{e^y}\dfrac{\partial
 e^y}{\partial x} &amp; - \dfrac{x}{e^x}\dfrac{\partial e^x}{\partial x}
 \\  - \dfrac{y}{e^y}\dfrac{\partial e^y}{\partial y} &amp; 1 -
-\dfrac{y}{e^x}\dfrac{\partial e^x}{\partial y} \end{mathbfatrix}
-\\ = \ &amp; [x^{n}y^{n}] e^{(n + 1)(x + y)} \begin{mathbfatrix} 1 &amp;
--x \\  - y &amp; 1 \end{mathbfatrix}
+\dfrac{y}{e^x}\dfrac{\partial e^x}{\partial y} \end{matrix}
+\\ = \ &amp; [x^{n}y^{n}] e^{(n + 1)(x + y)} \begin{matrix} 1 &amp; -x
+\\  - y &amp; 1 \end{matrix}
 \\ = \ &amp; [x^{n}y^{n}] e^{(n + 1)(x + y)} (1-xy)
 \end{aligned}\]</span></p>
 <p>施多元拉反 <span class="math inline">\(2\)</span> 有</p>
@@ -4921,7 +4918,7 @@ class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><
   
   
     <a href="/2024/08/05/%E7%AD%9B%E6%B3%95%E7%9B%B8%E5%85%B3/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">
         
           筛法相关
